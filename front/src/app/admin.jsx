@@ -104,7 +104,7 @@ export default class AdminMain extends React.Component {
                     </div>
                 </nav>
 
-                <div className="col-md-10 col-xs-10" style={{padding:"0px", margin:"0px", height:'100%'}}>
+                <div style={{padding:"0px", margin:"0px", height:'100%'}}>
                     {
                         React.cloneElement(this.props.children, {
                             userInfo: this.state.userInfo,
