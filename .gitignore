@@ -1,0 +1,12 @@
+# vim
+*.swp
+*.swo
+
+# netstore
+/front/node_modules
+/server/pkg
+/server/bin
+/media
+/bin
+/front/dist/js
+
