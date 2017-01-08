@@ -21,10 +21,13 @@ export default class AdminShortCut extends React.Component {
                             <span className="label label-info" style={{padding:"2px"}}>{this.props.commodity.class+" / "+this.props.commodity.subClass}</span>
                         </div>
                         <div className="netstore-table-cell" style={{width:"1%"}}>
-                            <button type="button" className="btn btn-default"><span className="glyphicon glyphicon-edit"></span>编辑</button>
+                            <button type="button" className="btn btn-default" onClick={(()=>{this.props.onItemClick("detail", this.props.commodity)}).bind(this)}><span className="glyphicon glyphicon-eye-open"></span>详情</button>
                         </div>
                         <div className="netstore-table-cell" style={{width:"1%", paddingLeft:"10px"}}>
-                            <button type="button" className="btn btn-default"><span className="glyphicon glyphicon-trash"></span>删除</button>
+                            <button type="button" className="btn btn-default" onClick={(()=>{this.props.onItemClick("edit", this.props.commodity)}).bind(this)}><span className="glyphicon glyphicon-edit"></span>编辑</button>
+                        </div>
+                        <div className="netstore-table-cell" style={{width:"1%", paddingLeft:"10px"}}>
+                                <button type="button" className="btn btn-default" onClick={(()=>{this.props.onItemClick("delete", this.props.commodity)}).bind(this)}><span className="glyphicon glyphicon-trash"></span>删除</button>
                         </div>
                     </div>
                     <h4 className="price-color">{this.props.commodity.price}</h4>

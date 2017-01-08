@@ -145,7 +145,7 @@ func (p *MainHandler) GenerateCommodityIndex() (index int64, err error) {
 		CommodityIndex int64  `json:"commodityIndex" bson:"commodityIndex"`
 	}
 	change := mgo.Change{
-		Update:    bson.M{"$inc": bson.M{"index": 1}},
+		Update:    bson.M{"$inc": bson.M{"commodityIndex": 1}},
 		ReturnNew: true,
 	}
 	_, err = p.AppConfColl.Find(bson.M{"app": p.Config.AppName}).Apply(change, &doc)

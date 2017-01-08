@@ -55,9 +55,7 @@ func (p *MainHandler) ActionCommodities(w http.ResponseWriter, r *http.Request) 
 			Commodities []model.Commodity `json:"commodities"`
 			TotalNum    int               `json:"totalNum"`
 		}
-		err = p.CommodityColl.Find(filter).Select(bson.M{
-			"detailIntro": 0,
-		}).Sort("modifyTime").All(&respBody.Commodities)
+		err = p.CommodityColl.Find(filter).Sort("modifyTime").All(&respBody.Commodities)
 		if err != nil {
 			http.Error(w, "find commodities error: "+err.Error(), 500)
 			return
@@ -114,14 +112,9 @@ func (p *MainHandler) ActionCommodity(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var commodityByte []byte
-		commodityByte, err = bson.Marshal(reqData.Commodity)
-		if err != nil {
-			http.Error(w, "commodity struct Marshal error: "+err.Error(), 500)
-			return
-		}
-		commodityBson := bson.M{}
-		err = bson.UnmarshalJSON(commodityByte, commodityBson)
+		commodityByte, _ := bson.Marshal(&reqData.Commodity)
+		commodityBson := make(bson.M, 0)
+		err = bson.Unmarshal(commodityByte, &commodityBson)
 		if err != nil {
 			http.Error(w, "commodity byte Unmarshal error: "+err.Error(), 500)
 			return
@@ -129,7 +122,7 @@ func (p *MainHandler) ActionCommodity(w http.ResponseWriter, r *http.Request) {
 
 		var respBody struct {
 			model.RespBase
-			CommodityId string `json:"commodityId"`
+			CommodityId bson.ObjectId `json:"commodityId"`
 		}
 		if reqData.Action == "add" {
 			delete(commodityBson, "_id")
@@ -151,13 +144,16 @@ func (p *MainHandler) ActionCommodity(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "find commodity error: "+err.Error(), 500)
 				return
 			}
-			respBody.CommodityId = commodity.ID.Hex()
+			respBody.CommodityId = commodity.ID
 		} else if reqData.Action == "edit" {
-			respBody.CommodityId = commodityBson["_id"].(string)
+			respBody.CommodityId = commodityBson["_id"].(bson.ObjectId)
 			delete(commodityBson, "_id")
-			p.CommodityColl.Update(bson.M{"_id": bson.ObjectIdHex(respBody.CommodityId)}, bson.M{"$set": commodityBson})
+			delete(commodityBson, "index")
+			p.CommodityColl.Update(bson.M{"_id": respBody.CommodityId}, bson.M{"$set": commodityBson})
 		}
 
+		respBody.Status = 200
+		respBody.Message = "success"
 		respByte, _ := json.Marshal(&respBody)
 		w.Write(respByte)
 		return

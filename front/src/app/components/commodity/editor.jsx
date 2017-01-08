@@ -19,10 +19,20 @@ export default class CommodityEditor extends React.Component {
                 detailIntro: "",
             }
         }
+        if (this.props.routeParams != null && this.props.routeParams.id != null && this.props.routeParams.id.length > 0) {
+            HttpUtils.get("/api/root/commodity/"+this.props.routeParams.id,{},((resp)=>{
+                this.refs.editor.setValue(resp.commodity.detailIntro)
+                this.setState({
+                    commodity: resp.commodity,
+                })
+            }).bind(this),(resp)=>{
+                HttpUtils.alert("["+resp.status+"] "+resp.responseText)
+            })
+        }
     }
 
     componentDidMount() {
-        this.refs.editor.setValue(this.state.commodity.intro)
+        this.refs.editor.setValue(this.state.commodity.detailIntro)
     }
 
     onSelectImg() {
@@ -82,6 +92,20 @@ export default class CommodityEditor extends React.Component {
             HttpUtils.alert("分类不能为空")
             return
         }
+        let action = "add"
+        if (this.state.commodity.id != null && this.state.commodity.id.length > 0) {
+            action = "edit"
+        }
+        HttpUtils.post("/api/root/commodity", {
+            action: action,
+            commodity: this.state.commodity,
+        }, ((resp)=>{
+            this.state.commodity.id = resp.commodityId
+            this.setState({})
+            HttpUtils.notice("提交成功")
+        }).bind(this), (resp)=>{
+            HttpUtils.alert("["+resp.status+"] "+resp.responseText)
+        })
     }
 
     render() {
@@ -94,7 +118,7 @@ export default class CommodityEditor extends React.Component {
                                 <form role="form">
                                     <div className={["form-group has-feedback", {true:"has-error", false:""}[this.state.commodity.title.length==0&&this.state.hasSubmit]].join(" ")}>
                                         <label>标题</label>
-                                        <input type="text" className="form-control" placeholder="请输入标题" value={this.state.title} onChange={((event)=>{
+                                        <input type="text" className="form-control" placeholder="请输入标题" value={this.state.commodity.title} onChange={((event)=>{
                                             this.state.commodity.title = event.target.value
                                             this.setState({})
                                         }).bind(this)}/>

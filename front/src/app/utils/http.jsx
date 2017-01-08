@@ -6,7 +6,13 @@ function get(url, data, successFunc, errorFunc) {
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         success: successFunc,
-        error: errorFunc,
+        error: (resp)=>{
+            if (errorFunc != undefined) {
+                errorFunc(resp)
+            } else {
+                alert("["+resp.status+"] "+resp.responseText)
+            }
+        },
     })
 }
 
@@ -18,7 +24,13 @@ function post(url, data, successFunc, errorFunc) {
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         success: successFunc,
-        error: errorFunc,
+        error: (resp)=>{
+            if (errorFunc != undefined) {
+                errorFunc(resp)
+            } else {
+                alert("["+resp.status+"] "+resp.responseText)
+            }
+        },
     })
 }
 
@@ -30,7 +42,13 @@ function deleteAction(url, data, successFunc, errorFunc) {
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         success: successFunc,
-        error: errorFunc,
+        error: (resp)=>{
+            if (errorFunc != undefined) {
+                errorFunc(resp)
+            } else {
+                alert("["+resp.status+"] "+resp.responseText)
+            }
+        },
     })
 }
 

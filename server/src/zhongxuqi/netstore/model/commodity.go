@@ -3,7 +3,7 @@ package model
 import "gopkg.in/mgo.v2/bson"
 
 type Commodity struct {
-	ID          bson.ObjectId `json:"id" bson:"_id"`
+	ID          bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
 	Index       int           `json:"index" bson:"index"`
 	Title       string        `json:"title" bson:"title"`
 	ImageUrl    string        `json:"imageUrl" bson:"imageUrl"`

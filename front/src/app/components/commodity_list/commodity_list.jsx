@@ -9,7 +9,7 @@ export default class CommodityList extends React.Component {
                 {
                     this.props.commodities.map((item, i)=>{
                         return (
-                            <AdminShortCut commodity={item}></AdminShortCut>
+                            <AdminShortCut commodity={item} onItemClick={this.props.onItemClick}></AdminShortCut>
                         )
                     })
                 } 

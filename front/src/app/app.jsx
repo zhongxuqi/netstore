@@ -1,6 +1,17 @@
 import React from 'react';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 import { render } from 'react-dom';
+import marked from 'marked'
+marked.setOptions({
+    renderer: new marked.Renderer(),
+    gfm: true,
+    tables: true,
+    breaks: true,
+    pedantic: false,
+    sanitize: false,
+    smartLists: true,
+    smartypants: false
+});
 
 import './app.less'
 

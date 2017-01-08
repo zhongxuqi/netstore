@@ -1,46 +1,37 @@
 import React from 'react';
+import marked from 'marked'
+
+import HttpUtils from '../../utils/http.jsx'
 
 export default class CommodityOverView extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            commodities: [{
-                imageUrl: "https://g-search3.alicdn.com/img/bao/uploaded/i4/i3/TB1sr9bOVXXXXaMXpXXXXXXXXXX_!!0-item_pic.jpg_460x460Q90.jpg_.webp",
-                title: "This is title",   
-                price: 100,
-                intro: "This is intro",
-            }, {
-                imageUrl: "https://g-search3.alicdn.com/img/bao/uploaded/i4/i2/TB1yWwxOVXXXXX0aVXXXXXXXXXX_!!0-item_pic.jpg_460x460Q90.jpg_.webp",
-                title: "This is title",
-                price: 100,
-                intro: "This is intro",
-            }, {
-                imageUrl: "https://g-search3.alicdn.com/img/bao/uploaded/i4/i2/TB1yWwxOVXXXXX0aVXXXXXXXXXX_!!0-item_pic.jpg_460x460Q90.jpg_.webp",
-                title: "This is title",
-                price: 100,
-                intro: "This is intro",
-            }, {
-                imageUrl: "https://g-search3.alicdn.com/img/bao/uploaded/i4/i2/TB1yWwxOVXXXXX0aVXXXXXXXXXX_!!0-item_pic.jpg_460x460Q90.jpg_.webp",
-                title: "This is title",
-                price: 100,
-                intro: "This is intro",
-            }, {
-                imageUrl: "https://g-search3.alicdn.com/img/bao/uploaded/i4/i2/TB1yWwxOVXXXXX0aVXXXXXXXXXX_!!0-item_pic.jpg_460x460Q90.jpg_.webp",
-                title: "This is title",
-                price: 100,
-                intro: "This is intro",
-            }, {
-                imageUrl: "https://g-search3.alicdn.com/img/bao/uploaded/i4/i2/TB1yWwxOVXXXXX0aVXXXXXXXXXX_!!0-item_pic.jpg_460x460Q90.jpg_.webp",
-                title: "This is title",
-                price: 100,
-                intro: "This is intro",
-            }, {
-                imageUrl: "https://g-search3.alicdn.com/img/bao/uploaded/i4/i2/TB1yWwxOVXXXXX0aVXXXXXXXXXX_!!0-item_pic.jpg_460x460Q90.jpg_.webp",
-                title: "This is title",
-                price: 100,
-                intro: "This is intro",
-            }]
+            commodities: [],
+            commodity: {},
         }
+        this.getCommodities()
+    }
+        
+    getCommodities() {
+        HttpUtils.get("/openapi/commodities", {}, ((resp)=>{
+            if (resp.commodities == null) return
+            this.setState({
+                commodities: resp.commodities,
+                totalNum: resp.totalNum,
+            })
+        }).bind(this))
+    }
+
+    detailCommodity(commodity) {
+        this.setState({
+            commodity:commodity,
+        })
+        $("#commodityDetailModal #content")[0].innerHTML = marked(commodity.detailIntro)
+        $("#commodityDetailModal #content a").each((i, element)=>{
+            $(element).attr("target", "_blank")
+        })
+        $("#commodityDetailModal").modal("show")
     }
 
     render() {
@@ -99,21 +90,38 @@ export default class CommodityOverView extends React.Component {
                     <div className="col-md-9">
                         <div className="row">
                             {
-                                this.state.commodities.map((item, index)=>{
+                                this.state.commodities.map((commodity, index)=>{
                                     return (
                                         <div className="col-sm-6 col-md-4">
                                             <div className="thumbnail">
-                                                <img src={item.imageUrl} alt="..."/>
+                                                <img src={commodity.imageUrl} style={{height:"150px"}}/>
                                                 <div class="caption">
-                                                    <h3><span className="price-color">{item.price}</span></h3>
-                                                    <h3>{item.title}</h3>
-                                                    <p>{item.intro}</p>
+                                                    <h3><span className="price-color">{commodity.price}</span></h3>
+                                                    <h3>{commodity.title}</h3>
+                                                    <p>{commodity.intro}</p>
+                                                    <button type="button" className="btn btn-default" onClick={(()=>{
+                                                        this.detailCommodity(commodity)
+                                                    }).bind(this)}>详情</button>
                                                 </div>
                                             </div>
                                         </div>
                                     )
                                 })
                             }
+                        </div>
+                    </div>
+                </div>
+                
+                <div className="modal fade" id="commodityDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>
+                                <h4 className="modal-title" id="myModalLabel">{this.state.commodity.title}</h4>
+                            </div>
+                            <div className="modal-body">
+                                <div id="content"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
