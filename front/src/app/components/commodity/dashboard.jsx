@@ -1,5 +1,7 @@
 import React from 'react'
 
+import HttpUtils from '../../utils/http.jsx'
+
 import ListTitle from '../list_title/list_title.jsx'
 import CommodityList from '../commodity_list/commodity_list.jsx'
 
@@ -7,32 +9,21 @@ export default class CommodityDashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            commodities: [{
-                index: 1,
-                title: "this is title",
-                imageUrl: "http://g-search3.alicdn.com/img/bao/uploaded/i4/i3/TB1sr9bOVXXXXaMXpXXXXXXXXXX_!!0-item_pic.jpg_460x460Q90.jpg_.webp",
-                price: 100,
-                intro: "This is intro",
-                class: "iphone",
-                subClass: "iphone 7",
-            }, {
-                index: 1,
-                title: "this is title",
-                imageUrl: "http://g-search3.alicdn.com/img/bao/uploaded/i4/i3/TB1sr9bOVXXXXaMXpXXXXXXXXXX_!!0-item_pic.jpg_460x460Q90.jpg_.webp",
-                price: 100,
-                intro: "This is intro",
-                class: "iphone",
-                subClass: "iphone 7",
-            }, {
-                index: 1,
-                title: "this is title",
-                imageUrl: "http://g-search3.alicdn.com/img/bao/uploaded/i4/i3/TB1sr9bOVXXXXaMXpXXXXXXXXXX_!!0-item_pic.jpg_460x460Q90.jpg_.webp",
-                price: 100,
-                intro: "This is intro",
-                class: "iphone",
-                subClass: "iphone 7",
-            }]
+            commodities: [],
+            totalNum: 0,
         };
+        this.getCommodities()
+    }
+
+    getCommodities() {
+        HttpUtils.get("/api/root/commodities", {}, ((resp)=>{
+            console.log(resp)
+            if (resp.commodities == null) return
+            this.setState({
+                commodities: resp.commodities,
+                totalNum: resp.totalNum,
+            })
+        }).bind(this))
     }
 
     render() {
@@ -86,7 +77,7 @@ export default class CommodityDashboard extends React.Component {
                 </div>
 
                 <div className="col-md-10 col-md-offset-1">
-                    <ListTitle commodityTotal="10"></ListTitle>
+                    <ListTitle commodityTotal={this.state.totalNum}></ListTitle>
                     <CommodityList commodities={this.state.commodities}></CommodityList>
                 </div>
             </div>

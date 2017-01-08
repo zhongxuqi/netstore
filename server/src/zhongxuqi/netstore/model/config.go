@@ -12,6 +12,7 @@ type AppConfig struct {
 
 // Config env of the server
 type Config struct {
+	AppName      string `json:"app_name"`
 	ServerAddr   string `json:"server_addr"`
 	RootEmail    string `json:"root_email"`
 	RootPhone    string `json:"root_phone"`

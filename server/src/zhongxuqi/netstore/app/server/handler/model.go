@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 
 	"crypto/md5"
 	"encoding/hex"
@@ -135,4 +136,22 @@ func (p *MainHandler) ClearSession(w http.ResponseWriter) {
 		HttpOnly: true,
 	}
 	w.Header().Add("Set-Cookie", tokenCookie.String())
+}
+
+// generate report index
+func (p *MainHandler) GenerateCommodityIndex() (index int64, err error) {
+	var doc struct {
+		App            string `json:"app" bson:"app"`
+		CommodityIndex int64  `json:"commodityIndex" bson:"commodityIndex"`
+	}
+	change := mgo.Change{
+		Update:    bson.M{"$inc": bson.M{"index": 1}},
+		ReturnNew: true,
+	}
+	_, err = p.AppConfColl.Find(bson.M{"app": p.Config.AppName}).Apply(change, &doc)
+	if err != nil {
+		return
+	}
+	index = doc.CommodityIndex
+	return
 }

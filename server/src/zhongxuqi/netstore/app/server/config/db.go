@@ -24,8 +24,11 @@ func InitDB(mainHander *handler.MainHandler) {
 	}
 
 	// init db
-	mainHander.AppConfColl = sess.DB(mainHander.Config.DBConfig.DBName).C(APPNAME)
-	mainHander.AppConfColl.Upsert(bson.M{"app": APPNAME}, bson.M{"$set": bson.M{"version": VERSION}})
+	if mainHander.Config.AppName == "" {
+		mainHander.Config.AppName = APPNAME
+	}
+	mainHander.AppConfColl = sess.DB(mainHander.Config.DBConfig.DBName).C(mainHander.Config.AppName)
+	mainHander.AppConfColl.Upsert(bson.M{"app": APPNAME}, bson.M{"$set": bson.M{"app": APPNAME, "version": VERSION}})
 
 	appConf := model.AppConfig{}
 	err = mainHander.AppConfColl.Find(&bson.M{"app": APPNAME}).One(&appConf)

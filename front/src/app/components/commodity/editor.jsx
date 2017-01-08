@@ -7,6 +7,22 @@ import MarkdownEditor from '../markdown_editor/markdown_editor.jsx'
 export default class CommodityEditor extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            hasSubmit: false,
+            commodity: {
+                title: "",
+                imageUrl: "",
+                intro: "",
+                price: 0,
+                class: "",
+                subClass: "",
+                detailIntro: "",
+            }
+        }
+    }
+
+    componentDidMount() {
+        this.refs.editor.setValue(this.state.commodity.intro)
     }
 
     onSelectImg() {
@@ -30,12 +46,42 @@ export default class CommodityEditor extends React.Component {
             contentType: false,
             dataType: "json",
             success: (resp) => {
-                $("#imageview").attr("src", resp.imageUrl)
+                this.state.commodity.imageUrl = resp.imageUrl
+                this.setState({})
             },
             error: (resp) => {
                 HttpUtils.alert("["+resp.status+"] "+resp.responseText)
             },
         })
+    }
+
+    submit() {
+        console.log(this.state.commodity)
+        this.setState({hasSubmit: true})
+        if (this.state.commodity.title.length == 0) {
+            HttpUtils.alert("标题不能为空")
+            return
+        }
+        if (this.state.commodity.imageUrl.length == 0) {
+            HttpUtils.alert("图片不能为空")
+            return
+        }
+        if (this.state.commodity.intro.length == 0) {
+            HttpUtils.alert("简介不能为空")
+            return
+        }
+        if (this.state.commodity.price <= 0) {
+            HttpUtils.alert("价格不能小于等于0")
+            return
+        }
+        if (this.state.commodity.subClass.length == 0) {
+            HttpUtils.alert("型号不能为空")
+            return
+        }
+        if (this.state.commodity.class.length == 0) {
+            HttpUtils.alert("分类不能为空")
+            return
+        }
     }
 
     render() {
@@ -46,32 +92,51 @@ export default class CommodityEditor extends React.Component {
                         <div className="panel panel-default">
                             <div className="panel-body">
                                 <form role="form">
-                                    <div className="form-group">
-                                        <label>商品编号</label>
-                                        <input type="number" className="form-control" placeholder="请输入编号"/>
-                                    </div>
-                                    <div className="form-group">
+                                    <div className={["form-group has-feedback", {true:"has-error", false:""}[this.state.commodity.title.length==0&&this.state.hasSubmit]].join(" ")}>
                                         <label>标题</label>
-                                        <input type="text" className="form-control" placeholder="请输入标题"/>
+                                        <input type="text" className="form-control" placeholder="请输入标题" value={this.state.title} onChange={((event)=>{
+                                            this.state.commodity.title = event.target.value
+                                            this.setState({})
+                                        }).bind(this)}/>
+                                        <span className="glyphicon glyphicon-remove form-control-feedback" style={{display:{true:"inline",false:"none"}[this.state.commodity.title.length==0&&this.state.hasSubmit]}}></span>
                                     </div>
                                     <div className="form-group">
                                         <label>图片</label>
                                         <input type="file" id="thumbnailImg" onChange={this.onSelectImg.bind(this)} style={{display:"none"}}/>
-                                        <a className="thumbnail" onClick={()=>{$("#thumbnailImg").click()}} style={{minHeight:"50px"}}>
-                                            <img id="imageview"/>
+                                        <a className="thumbnail" onClick={()=>{$("#thumbnailImg").click()}}>
+                                            <img src={this.state.commodity.imageUrl}/>
                                         </a>
                                     </div>
                                     <div className="form-group">
+                                        <label>简介</label>
+                                        <textarea type="text" className="form-control" placeholder="请输入简介" value={this.state.commodity.intro} onChange={((event)=>{
+                                            this.state.commodity.intro = event.target.value
+                                            this.setState({})
+                                        }).bind(this)}></textarea>
+                                    </div>
+                                    <div className={["form-group has-feedback", {true:"has-error", false:""}[this.state.commodity.price<=0&&this.state.hasSubmit]].join(" ")}>
                                         <label>价格</label>
-                                        <input type="number" className="form-control" placeholder="请输入价格"/>
+                                        <input type="number" className="form-control" placeholder="请输入价格" value={this.state.commodity.price} onChange={((event)=>{
+                                            this.state.commodity.price = parseInt(event.target.value)
+                                            this.setState({})
+                                        }).bind(this)}/>
+                                        <span className="glyphicon glyphicon-remove form-control-feedback" style={{display:{true:"inline",false:"none"}[this.state.commodity.price<=0&&this.state.hasSubmit]}}></span>
                                     </div>
-                                    <div className="form-group">
+                                    <div className={["form-group has-feedback", {true:"has-error", false:""}[this.state.commodity.subClass.length==0&&this.state.hasSubmit]].join(" ")}>
                                         <label>型号</label>
-                                        <input type="text" className="form-control" placeholder="请输入型号"/>
+                                        <input type="text" className="form-control" placeholder="请输入型号" value={this.state.commodity.subClass} onChange={((event)=>{
+                                            this.state.commodity.subClass = event.target.value
+                                            this.setState({})
+                                        }).bind(this)}/>
+                                        <span className="glyphicon glyphicon-remove form-control-feedback" style={{display:{true:"inline",false:"none"}[this.state.commodity.subClass.length==0&&this.state.hasSubmit]}}></span>
                                     </div>
-                                    <div className="form-group">
+                                    <div className={["form-group has-feedback", {true:"has-error", false:""}[this.state.commodity.class.length==0&&this.state.hasSubmit]].join(" ")}>
                                         <label>分类</label>
-                                        <input type="text" className="form-control" placeholder="请输入分类"/>
+                                        <input type="text" className="form-control" placeholder="请输入分类" value={this.state.commodity.class} onChange={((event)=>{
+                                            this.state.commodity.class = event.target.value
+                                            this.setState({})
+                                        }).bind(this)}/>
+                                        <span className="glyphicon glyphicon-remove form-control-feedback" style={{display:{true:"inline",false:"none"}[this.state.commodity.class.length==0&&this.state.hasSubmit]}}></span>
                                     </div>
                                 </form>
                             </div>
@@ -79,11 +144,13 @@ export default class CommodityEditor extends React.Component {
                     </div>
                     <div className="col-md-8">
                         <MarkdownEditor ref="editor" onChange={((value)=>{
+                            this.state.commodity.detailIntro = value
+                            this.setState({})
                         }).bind(this)}></MarkdownEditor>
                     </div>
                 </div>
                 <div className="row">
-                    <button type="button" className="btn btn-success pull-right" style={{margin:"10px"}}>提交</button>
+                    <button type="button" className="btn btn-success pull-right" style={{margin:"10px"}} onClick={this.submit.bind(this)}>提交</button>
                     <button type="button" className="btn btn-warning pull-right" style={{margin:"10px"}}>取消</button>
                 </div>
             </div>

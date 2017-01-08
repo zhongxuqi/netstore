@@ -48,6 +48,9 @@ func InitRouter(mainHandler *handler.MainHandler) {
 	rootHandler.HandleFunc("/api/root/upload_image", mainHandler.ActionUpLoadImage)
 	rootHandler.HandleFunc("/api/root/upload_audio", mainHandler.ActionUpLoadAudio)
 	rootHandler.HandleFunc("/api/root/upload_video", mainHandler.ActionUpLoadVideo)
+	rootHandler.HandleFunc("/api/root/commodity", mainHandler.ActionCommodity)
+	rootHandler.HandleFunc("/api/root/commodity/", mainHandler.ActionCommodity)
+	rootHandler.HandleFunc("/api/root/commodities", mainHandler.ActionCommodities)
 	apiHandler.HandleFunc("/api/root/", func(w http.ResponseWriter, r *http.Request) {
 
 		// check permission
