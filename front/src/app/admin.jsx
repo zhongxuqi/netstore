@@ -6,6 +6,8 @@ import HttpUtil from './utils/http.jsx'
 import Language from './language/language.jsx'
 
 import CommodityDashboard from './components/commodity/dashboard.jsx'
+import Banner from './components/banner/banner.jsx'
+import CommodityEditor from './components/commodity/editor.jsx'
 
 import './admin.less';
 
@@ -13,12 +15,20 @@ export default class AdminMain extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            tabStatus: 'dashboard',
             userInfo: {},
             confirmModal: {
                 title: "",
                 message: "",
             },
             isShowNoBtn: false,
+        }
+        let sindex = window.location.hash.indexOf("#/")
+        let status = window.location.hash.substring(sindex + 2)
+        if (status.length == 0) {
+            this.state.tabStatus = 'dashboard'
+        } else {
+            this.state.tabStatus = status
         }
         this.updateUserInfo()
     }
@@ -82,11 +92,17 @@ export default class AdminMain extends React.Component {
 
                         <div className="collapse navbar-collapse">
                             <ul className="nav navbar-nav btn-menu">
-                                <li className="active"><a>商品管理</a></li>
-                                <li><a>Banner管理</a></li>
-                                <li><a><span className="glyphicon glyphicon-plus"></span>添加商品</a></li>
+                                <li className={[{true:"active", false:""}[this.state.tabStatus=="dashboard"]].join(" ")}><a onClick={(()=>{
+                                    this.setState({tabStatus:"dashboard"})
+                                }).bind(this)} href="#/">商品管理</a></li>
+                                <li className={[{true:"active", false:""}[this.state.tabStatus=="banner"]].join(" ")}><a onClick={(()=> {
+                                    this.setState({tabStatus:"banner"})
+                                }).bind(this)} href="#/banner">Banner管理</a></li>
                             </ul>
                             <ul className="nav navbar-nav navbar-right btn-menu">
+                                <li><a href="#/editor" onClick={(()=>{
+                                    this.setState({tabStatus:"editor"})
+                                }).bind(this)}><span className="glyphicon glyphicon-plus"></span>添加商品</a></li>
                                 <li className="dropdown">
                                     <a className="dropdown-toggle" data-toggle="dropdown">{Language.currLang.value} <span className="caret"></span></a>
                                     <ul className="dropdown-menu" role="menu">
@@ -141,6 +157,9 @@ render((
   <Router history={hashHistory}>
     <Route path="/" component={AdminMain}>
       <IndexRoute component={CommodityDashboard}/>
+      <Route path="banner" component={Banner}/>
+      <Route path="editor" component={CommodityEditor}/>
+      <Route path="editor/:id" component={CommodityEditor}/>
     </Route>
   </Router>
 ), document.getElementById('app'));

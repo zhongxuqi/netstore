@@ -4,6 +4,7 @@ import "gopkg.in/mgo.v2/bson"
 
 type Commodity struct {
 	ID       bson.ObjectId `json:"id" bson:"_id"`
+	Index    int           `json:"index"`
 	Title    string        `json:"title"`
 	ImageUrl string        `json:"imageUrl"`
 	Intro    string        `json:"intro"`

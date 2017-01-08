@@ -105,7 +105,7 @@ export default class CommodityOverView extends React.Component {
                                             <div className="thumbnail">
                                                 <img src={item.imageUrl} alt="..."/>
                                                 <div class="caption">
-                                                    <h3><span style={{color:"#F40"}}>{item.price}</span></h3>
+                                                    <h3><span className="price-color">{item.price}</span></h3>
                                                     <h3>{item.title}</h3>
                                                     <p>{item.intro}</p>
                                                 </div>
