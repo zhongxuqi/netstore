@@ -55,7 +55,7 @@ func (p *MainHandler) ActionCommodities(w http.ResponseWriter, r *http.Request) 
 			Commodities []model.Commodity `json:"commodities"`
 			TotalNum    int               `json:"totalNum"`
 		}
-		err = p.CommodityColl.Find(filter).Sort("modifyTime").All(&respBody.Commodities)
+		err = p.CommodityColl.Find(filter).Sort("-modifyTime").All(&respBody.Commodities)
 		if err != nil {
 			http.Error(w, "find commodities error: "+err.Error(), 500)
 			return

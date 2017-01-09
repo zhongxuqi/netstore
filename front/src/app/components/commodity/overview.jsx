@@ -10,7 +10,28 @@ export default class CommodityOverView extends React.Component {
             commodities: [],
             commodity: {},
         }
+
         this.getCommodities()
+    }
+
+    componentDidMount() {
+        this.initSideBar()
+    }
+
+    initSideBar() {
+        $(window).scroll(()=>{
+            let sideBarParentToTop = $("#sidebar").parent().offset().top - $(window).scrollTop()
+            if (sideBarParentToTop >= 0) {
+                $("#sidebar").removeClass("sidebar-active")
+                $("#sidebar").css("width", "auto")
+            }
+            let sideBarToTop = $('#sidebar').offset().top - $(window).scrollTop()
+            let width = $("#sidebar").width()
+            if (sideBarToTop <= 10) {
+                $("#sidebar").addClass("sidebar-active")
+                $("#sidebar").css("width", width+"px")
+            }
+        })
     }
         
     getCommodities() {
@@ -36,7 +57,7 @@ export default class CommodityOverView extends React.Component {
 
     render() {
         return (
-            <div style={{overflowY:"scroll"}}>
+            <div style={{overflow:"hidden"}}>
                 <div className="carousel slide" data-ride="carousel" style={{
                     height: "450px",
                     overflow: "hidden",
@@ -81,7 +102,7 @@ export default class CommodityOverView extends React.Component {
 
                 <div className="container" style={{marginTop:"10px"}}>
                     <div className="col-md-3">
-                        <ul className="nav nav-pills nav-stacked" role="tablist">
+                        <ul id="sidebar" className="nav nav-pills nav-stacked" role="tablist">
                             <li role="presentation" className="active"><a>Home</a></li>
                             <li role="presentation"><a>Profile</a></li>
                             <li role="presentation"><a>Messages</a></li>
@@ -92,16 +113,18 @@ export default class CommodityOverView extends React.Component {
                             {
                                 this.state.commodities.map((commodity, index)=>{
                                     return (
-                                        <div className="col-sm-6 col-md-4">
-                                            <div className="thumbnail">
+                                        <div className="col-sm-4 col-md-3" key={index}>
+                                            <div className="thumbnail hover-background" onClick={(()=>{
+                                                this.detailCommodity(commodity)
+                                            }).bind(this)} style={{padding:"0px", borderRadius:"0px"}}>
                                                 <img src={commodity.imageUrl} style={{height:"150px"}}/>
-                                                <div class="caption">
+                                                <div className="caption">
                                                     <h3><span className="price-color">{commodity.price}</span></h3>
-                                                    <h3>{commodity.title}</h3>
+                                                    <div className="netstore-table">
+                                                        <h4 className="netstore-table-cell">{commodity.title}</h4>
+                                                        <div className="netstore-table-cell"><span className="badge">{commodity.index}</span></div>
+                                                    </div>
                                                     <p>{commodity.intro}</p>
-                                                    <button type="button" className="btn btn-default" onClick={(()=>{
-                                                        this.detailCommodity(commodity)
-                                                    }).bind(this)}>详情</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,7 +135,7 @@ export default class CommodityOverView extends React.Component {
                     </div>
                 </div>
                 
-                <div className="modal fade" id="commodityDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div className="modal fade" id="commodityDetailModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">

@@ -103,6 +103,9 @@ export default class CommodityEditor extends React.Component {
             this.state.commodity.id = resp.commodityId
             this.setState({})
             HttpUtils.notice("提交成功")
+            setTimeout(()=>{
+                window.location.hash = "#/"
+            }, 500)
         }).bind(this), (resp)=>{
             HttpUtils.alert("["+resp.status+"] "+resp.responseText)
         })
