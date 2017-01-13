@@ -2,47 +2,26 @@ import React from 'react'
 
 export default class CommodityGridItem extends React.Component {
     componentDidMount() {
-        $(".grid-item").each((i, item)=>{
-            let inFun = (event)=>{
-                console.log("in")
-                $(item).children(".grid-item-intro").animate({
-                    bottom: "0px",
-                }, 200, ()=>{
-                    $(item).one("mouseover", inFun)
-                })
-            }
-            $(item).one("mouseover", inFun)
-            let outFun = (event)=>{
-                console.log("out")
-                $(item).children(".grid-item-intro").animate({
-                    bottom: "-40px",
-                }, 200, ()=>{
-                    $(item).one("mouseleave", outFun)
-                })
-            }
-            $(item).one("mouseleave", outFun)
-        })
-        //let inFun = (event)=>{
-        //    console.log("in")
-        //    console.log(event)
-        //    //$(event.currentTarget).children(".grid-item-intro").finish()
-        //    $(event.currentTarget).children(".grid-item-intro").animate({
-        //        bottom: "0px",
-        //    }, 200, ()=>{
-        //        //$(".grid-item").one("mouseover", inFun)
-        //    })
-        //}
-        //$(".grid-item").one("mouseover", inFun)
-        //let outFun = (event)=>{
-        //    console.log("out")
-        //    //$(event.currentTarget).children(".grid-item-intro").finish()
-        //    $(event.currentTarget).children(".grid-item-intro").animate({
-        //        bottom: "-40px",
-        //    }, 200, ()=>{
-        //        $(".grid-item").one("mouseleave", outFun)
-        //    })
-        //}
-        //$(".grid-item").one("mouseleave", outFun)
+        let inFun = (event)=>{
+            $(event.currentTarget).children(".grid-item-intro").animate({
+                bottom: "0px",
+            }, 200, ()=>{
+                $(".grid-item").off("mouseover")
+                $(".grid-item").one("mouseover", inFun)
+            })
+        }
+        $(".grid-item").off("mouseover")
+        $(".grid-item").one("mouseover", inFun)
+        let outFun = (event)=>{
+            $(event.currentTarget).children(".grid-item-intro").animate({
+                bottom: "-40px",
+            }, 200, ()=>{
+                $(".grid-item").off("mouseleave")
+                $(".grid-item").one("mouseleave", outFun)
+            })
+        }
+        $(".grid-item").off("mouseleave")
+        $(".grid-item").one("mouseleave", outFun)
     }
 
     render() {
