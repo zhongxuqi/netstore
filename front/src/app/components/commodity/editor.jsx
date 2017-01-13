@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Language from '../../language/language.jsx'
 import HttpUtils from '../../utils/http.jsx'
 
 import MarkdownEditor from '../markdown_editor/markdown_editor.jsx'
@@ -111,6 +112,12 @@ export default class CommodityEditor extends React.Component {
         })
     }
 
+    onClickCancel() {
+        this.props.onConfirm(Language.textMap("Alert"), Language.textMap("Whether to ")+Language.textMap("cancel")+Language.textMap("the commodity")+ "?", ()=>{
+            window.location.hash = "#/"
+        })
+    }
+
     render() {
         return (
             <div className="container">
@@ -143,8 +150,8 @@ export default class CommodityEditor extends React.Component {
                                     </div>
                                     <div className={["form-group has-feedback", {true:"has-error", false:""}[this.state.commodity.price<=0&&this.state.hasSubmit]].join(" ")}>
                                         <label>价格</label>
-                                        <input type="number" className="form-control" placeholder="请输入价格" value={this.state.commodity.price} onChange={((event)=>{
-                                            this.state.commodity.price = parseInt(event.target.value)
+                                        <input type="number" step="0.01" className="form-control" placeholder="请输入价格" value={this.state.commodity.price} onChange={((event)=>{
+                                            this.state.commodity.price = parseFloat(event.target.value)
                                             this.setState({})
                                         }).bind(this)}/>
                                         <span className="glyphicon glyphicon-remove form-control-feedback" style={{display:{true:"inline",false:"none"}[this.state.commodity.price<=0&&this.state.hasSubmit]}}></span>
@@ -178,7 +185,7 @@ export default class CommodityEditor extends React.Component {
                 </div>
                 <div className="row">
                     <button type="button" className="btn btn-success pull-right" style={{margin:"10px"}} onClick={this.submit.bind(this)}>提交</button>
-                    <button type="button" className="btn btn-warning pull-right" style={{margin:"10px"}}>取消</button>
+                    <button type="button" className="btn btn-warning pull-right" style={{margin:"10px"}} onClick={this.onClickCancel.bind(this)}>取消</button>
                 </div>
             </div>
         )

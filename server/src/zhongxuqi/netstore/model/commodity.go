@@ -8,7 +8,7 @@ type Commodity struct {
 	Title       string        `json:"title" bson:"title"`
 	ImageUrl    string        `json:"imageUrl" bson:"imageUrl"`
 	Intro       string        `json:"intro" bson:"intro"`
-	Price       int           `json:"price" bson:"price"`
+	Price       float32       `json:"price" bson:"price"`
 	Class       string        `json:"class" bson:"class"`
 	SubClass    string        `json:"subClass" bson:"subClass"`
 	ModifyTime  int64         `json:"modifyTime" bson:"modifyTime"`

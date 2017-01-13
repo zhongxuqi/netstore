@@ -29,9 +29,9 @@ export default class CommodityGridItem extends React.Component {
              <div className="thumbnail hover-background grid-item" onClick={this.props.onItemClick} style={{position:"relative", padding:"0px", borderRadius:"0px"}}>
                  <img className="grid-item-image" src={this.props.commodity.imageUrl} style={{"width":"100%"}}/>
                  <div className="caption">
-                     <div style={{fontSize:"16px"}}><strong><span className="price-color">{this.props.commodity.price.toFixed(2)}</span></strong></div>
-                     <div className="netstore-table">
-                         <h4 className="netstore-table-cell">{this.props.commodity.title}</h4>
+                     <div style={{fontSize:"18px"}}><strong><span className="price-color">{this.props.commodity.price.toFixed(2)}</span></strong></div>
+                     <div style={{fontSize:"16px"}}>
+                         {this.props.commodity.title}
                      </div>
                  </div>
                  <div className="netstore-table-cell item-index" style={{position:"absolute", top:"0px", left:"0px", padding:"0px 5px"}}>{this.props.commodity.index}</div>
