@@ -9,13 +9,20 @@ export default class CommodityOverView extends React.Component {
         this.state = {
             commodities: [],
             commodity: {},
+            commodityClasses:[{
+                className:"所有商品",
+                classValue:"",
+                classNum:0,
+            }],
+            currCommodityClassValue:"",
         }
 
+        this.getCommodityClasses()
         this.getCommodities()
     }
 
     componentDidMount() {
-        this.initSideBar()
+        //this.initSideBar()
     }
 
     initSideBar() {
@@ -33,9 +40,38 @@ export default class CommodityOverView extends React.Component {
             }
         })
     }
+
+    getCommodityClasses() {
+        HttpUtils.get("/openapi/commodity_classes", {}, ((resp)=>{
+            let commodityClasses = this.state.commodityClasses.slice(0, 1)
+            commodityClasses[0].classNum = resp.totalNum
+            for (let className of Object.keys(resp.classMap)) {
+                for (let i=0;i<commodityClasses.length;i++) {
+                    if (resp.classMap[className] > commodityClasses[i].classNum) {
+                        commodityClasses.splice(i, 0, {
+                            className: className,
+                            classValue: className,
+                            classNum: resp.classMap[className],
+                        })
+                        break
+                    } else if (i == commodityClasses.length - 1) {
+                        commodityClasses.push({
+                            className: className,
+                            classValue: className,
+                            classNum: resp.classMap[className],
+                        })
+                        break
+                    }
+                }
+            }
+            this.setState({commodityClasses: commodityClasses})
+        }).bind(this))
+    }
         
     getCommodities() {
-        HttpUtils.get("/openapi/commodities", {}, ((resp)=>{
+        HttpUtils.get("/openapi/commodities", {
+            class: this.state.currCommodityClassValue,
+        }, ((resp)=>{
             if (resp.commodities == null) return
             this.setState({
                 commodities: resp.commodities,
@@ -101,42 +137,53 @@ export default class CommodityOverView extends React.Component {
                 </div>
 
                 <div className="container" style={{marginTop:"10px"}}>
-                    <div className="col-md-3">
+                    <div className="col-md-2">
                         <ul id="sidebar" className="nav nav-pills nav-stacked" role="tablist">
-                            <li role="presentation" className="active"><a>Home</a></li>
-                            <li role="presentation"><a>Profile</a></li>
-                            <li role="presentation"><a>Messages</a></li>
+                            {
+                                this.state.commodityClasses.map(((item, index)=>{
+                                    return (
+                                        <li role="presentation" 
+                                          className={[{true:"active",false:""}[item.classValue==this.state.currCommodityClassValue]].join(" ")}>
+                                            <a onClick={(()=>{
+                                                this.state.currCommodityClassValue = item.classValue
+                                                this.setState({})
+                                                this.getCommodities()
+                                            }).bind(this)}>{item.className}<span className="badge">{item.classNum}</span></a>
+                                        </li>
+                                    )
+                                }).bind(this))
+                            }
                         </ul>
                     </div>
-                    <div className="col-md-9">
-                        <div className="row">
-                            {
-                                this.state.commodities.map((commodity, index)=>{
-                                    return (
-                                        <div className="col-sm-4 col-md-3" key={index}>
-                                            <div className="thumbnail hover-background" onClick={(()=>{
-                                                this.detailCommodity(commodity)
-                                            }).bind(this)} style={{padding:"0px", borderRadius:"0px"}}>
-                                                <img src={commodity.imageUrl} style={{height:"150px"}}/>
-                                                <div className="caption">
-                                                    <h3><span className="price-color">{commodity.price}</span></h3>
-                                                    <div className="netstore-table">
-                                                        <h4 className="netstore-table-cell">{commodity.title}</h4>
-                                                        <div className="netstore-table-cell"><span className="badge">{commodity.index}</span></div>
-                                                    </div>
-                                                    <p>{commodity.intro}</p>
+                    <div className="col-md-10" onLoad={()=>{
+                        $(".grid-image-item").css("height", $(".grid-image-item")[0].clientWidth+"px")
+                    }}>
+                        {
+                            this.state.commodities.map((commodity, index)=>{
+                                return (
+                                    <div className="col-md-3 col-sm-4" key={index} style={{padding:"0px 10px"}}>
+                                        <div className="thumbnail hover-background" onClick={(()=>{
+                                            this.detailCommodity(commodity)
+                                        }).bind(this)} style={{padding:"0px", borderRadius:"0px"}}>
+                                            <img className="grid-image-item" src={commodity.imageUrl} style={{"width":"100%"}}/>
+                                            <div className="caption">
+                                                <h3><span className="price-color">{commodity.price}</span></h3>
+                                                <div className="netstore-table">
+                                                    <h4 className="netstore-table-cell">{commodity.title}</h4>
+                                                    <div className="netstore-table-cell"><span className="badge">{commodity.index}</span></div>
                                                 </div>
+                                                <p>{commodity.intro}</p>
                                             </div>
                                         </div>
-                                    )
-                                })
-                            }
-                        </div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
                 
                 <div className="modal fade" id="commodityDetailModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div className="modal-dialog">
+                    <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>

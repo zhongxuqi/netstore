@@ -19,6 +19,7 @@ func InitRouter(mainHandler *handler.MainHandler) {
 	openAPIHandler.HandleFunc("/openapi/logout", mainHandler.Logout)
 	openAPIHandler.HandleFunc("/openapi/rootinfo", mainHandler.ActionRootEmail)
 	openAPIHandler.HandleFunc("/openapi/commodities", mainHandler.PublicActionCommodities)
+	openAPIHandler.HandleFunc("/openapi/commodity_classes", mainHandler.PublicActionCommodityClasses)
 	mainHandler.Mux.HandleFunc("/openapi/", func(w http.ResponseWriter, r *http.Request) {
 		openAPIHandler.ServeHTTP(w, r)
 	})
