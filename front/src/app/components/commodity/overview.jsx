@@ -3,6 +3,8 @@ import marked from 'marked'
 
 import HttpUtils from '../../utils/http.jsx'
 
+import CommodityGridItem from './grid_item.jsx'
+
 export default class CommodityOverView extends React.Component {
     constructor(props) {
         super(props)
@@ -137,7 +139,7 @@ export default class CommodityOverView extends React.Component {
                 </div>
 
                 <div className="container" style={{marginTop:"10px"}}>
-                    <div className="col-md-2">
+                    <div className="col-md-2 col-sm-2">
                         <ul id="sidebar" className="nav netstore-nav-list" role="tablist" style={{position:"relative"}}>
                             {
                                 this.state.commodityClasses.map(((item, i)=>{
@@ -180,26 +182,14 @@ export default class CommodityOverView extends React.Component {
                             }
                         </ul>
                     </div>
-                    <div className="col-md-10" onLoad={()=>{
-                        $(".grid-image-item").css("height", $(".grid-image-item")[0].clientWidth+"px")
+                    <div className="col-md-10 col-sm-10" onLoad={()=>{
+                        $(".grid-item-image").css("height", $(".grid-item-image")[0].clientWidth+"px")
                     }}>
                         {
                             this.state.commodities.map((commodity, index)=>{
                                 return (
                                     <div className="col-md-3 col-sm-4" key={index} style={{padding:"0px 10px"}}>
-                                        <div className="thumbnail hover-background" onClick={(()=>{
-                                            this.detailCommodity(commodity)
-                                        }).bind(this)} style={{padding:"0px", borderRadius:"0px"}}>
-                                            <img className="grid-image-item" src={commodity.imageUrl} style={{"width":"100%"}}/>
-                                            <div className="caption">
-                                                <h3><span className="price-color">{commodity.price}</span></h3>
-                                                <div className="netstore-table">
-                                                    <h4 className="netstore-table-cell">{commodity.title}</h4>
-                                                    <div className="netstore-table-cell"><span className="badge">{commodity.index}</span></div>
-                                                </div>
-                                                <p>{commodity.intro}</p>
-                                            </div>
-                                        </div>
+                                        <CommodityGridItem onItemClick={this.detailCommodity.bind(this, commodity)} commodity={commodity}></CommodityGridItem>
                                     </div>
                                 )
                             })

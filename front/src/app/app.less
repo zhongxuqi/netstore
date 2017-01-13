@@ -92,3 +92,35 @@ ul.sidebar-active {
         border-top-color: @theme-color;
     }
 }
+
+.grid-item {
+    .box-shadow;
+    border-width: 1px;
+    border-color: @border-color2;
+    overflow: hidden;
+
+    .item-index {
+        color: white;
+        background-color: @border-color2;
+        border-radius: 0px 0px 5px 0px;
+    }
+
+    .grid-item-intro {
+        position: absolute;
+        width: 100%;
+        bottom: -40px;
+        height: 40px;
+        color: white;
+        background-color: @theme-color;
+        opacity: 0.9;
+        padding: 3px;
+    }
+}
+
+.grid-item:hover {
+    border-color: @theme-color;
+
+    .item-index {
+        background-color: @theme-color;
+    }
+}
