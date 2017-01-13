@@ -138,17 +138,42 @@ export default class CommodityOverView extends React.Component {
 
                 <div className="container" style={{marginTop:"10px"}}>
                     <div className="col-md-2">
-                        <ul id="sidebar" className="nav nav-pills nav-stacked" role="tablist">
+                        <ul id="sidebar" className="nav netstore-nav-list" role="tablist" style={{position:"relative"}}>
                             {
-                                this.state.commodityClasses.map(((item, index)=>{
+                                this.state.commodityClasses.map(((item, i)=>{
                                     return (
-                                        <li role="presentation" 
-                                          className={[{true:"active",false:""}[item.classValue==this.state.currCommodityClassValue]].join(" ")}>
+                                        <li key={i} role="presentation" 
+                                          className={[{true:"active",false:""}[item.classValue==this.state.currCommodityClassValue]].join(" ")}
+                                          style={{
+                                              position:"relative",
+                                              borderRadius: {
+                                                  true:"0px", 
+                                                  false: {
+                                                      true:"6px 6px 0px 0px",
+                                                      false:"0px 0px 6px 6px"
+                                                  }[i==0],
+                                              }[i!=0&&i!=this.state.commodityClasses.length-1],
+                                              borderWidth: {
+                                                  true: "1px",
+                                                  false: "1px 1px 0px 1px",
+                                              }[i==this.state.commodityClasses.length-1],
+                                          }}>
                                             <a onClick={(()=>{
                                                 this.state.currCommodityClassValue = item.classValue
                                                 this.setState({})
                                                 this.getCommodities()
-                                            }).bind(this)}>{item.className}<span className="badge">{item.classNum}</span></a>
+                                            }).bind(this)} className="netstore-table">
+                                                <div className="netstore-table-cell" style={{width:"99%", paddingLeft:"5px"}}>
+                                                    {item.className}
+                                                </div>
+                                                <div className="netstore-table-cell">
+                                                    <i className="fa fa-chevron-right"></i>
+                                                </div>
+                                            </a>
+
+                                            <div className="class-num">
+                                                <span>{item.classNum}</span>
+                                            </div>
                                         </li>
                                     )
                                 }).bind(this))

@@ -22,6 +22,73 @@ ul.sidebar-active {
 }
 
 .box-shadow {
-    box-shadow: 0 6px 12px rgba(0,0,0,.175);
-    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 1px 4px rgba(0,0,0,.065);
+    -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+}
+
+.netstore-label {
+    font-size: 12px;
+    background-color: @theme-color;
+    color: white;
+    padding: 0px 3px;
+
+    span {
+        text-align: center;
+        display: inline-block;
+    }
+}
+
+.netstore-nav-list {
+    .box-shadow;
+    position: relative;
+
+    li {
+        position: relative;
+        overflow-y: hidden;
+        border: 1px solid @border-color;
+        border-width: 1px 1px 0px 1px;
+
+        a {
+            color: @theme-color;
+        }
+
+        .class-num {
+            font-size: 10px;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            padding: 0px 5px;
+            border-width: 0px 1px 1px 0px;
+            border-color: @border-color;
+            border-style: solid;
+            border-bottom-right-radius: 5px;
+            color: @theme-color;
+        }
+    }
+
+    li:hover {
+        cursor: pointer;
+    }
+
+    li.active, li.active:hover {
+        border-color: @theme-color;
+        background-color: @theme-color;
+
+        a {
+            color: white;
+        }
+
+        a:hover {
+            background-color: @theme-color;
+        }
+
+        .class-num {
+            color: white;
+            border-color: @theme-color;
+        }
+    }
+
+    li.active + li {
+        border-top-color: @theme-color;
+    }
 }
