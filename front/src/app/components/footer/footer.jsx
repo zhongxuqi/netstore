@@ -6,9 +6,15 @@ export default class Footer extends React.Component {
     render() {
         return (
             <div className="netstore-footer">
-                <h3>{Language.textMap("Contact Me")}</h3>
-                <p>{Language.textMap("Address")}: {this.props.address}</p>
-                <p>{Language.textMap("Phone")}: {this.props.phone}</p>
+                <h3 className="col-md-offset-1">{Language.textMap("Contact Me")}</h3>
+                <p>
+                    <div className="col-md-2" style={{textAlign:"right"}}>{Language.textMap("Address")}:</div>
+                    <div className="col-md-10">{this.props.address}</div>
+                </p>
+                <p>
+                    <div className="col-md-2" style={{textAlign:"right"}}>{Language.textMap("Phone")}:</div>
+                    <div className="col-md-10">{this.props.phone}</div>
+                </p>
             </div>
         )
     }
