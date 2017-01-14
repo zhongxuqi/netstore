@@ -17,6 +17,8 @@ func (p *MainHandler) ActionSelf(w http.ResponseWriter, r *http.Request) {
 		ret.User = model.User{
 			Role:     model.ROOT,
 			Language: p.Config.RootLanguage,
+			Phone:    p.Config.RootPhone,
+			Address:  p.Config.RootAddress,
 		}
 
 		ret.Status = 200

@@ -54,7 +54,7 @@ export default class AdminMain extends React.Component {
                 userInfo: resp.user,
             })
         }).bind(this), ((data) => {
-            window.location = "/index.html"
+            window.location = "/login.html"
         }).bind(this))
     }
 

@@ -16,6 +16,7 @@ type Config struct {
 	ServerAddr   string `json:"server_addr"`
 	RootEmail    string `json:"root_email"`
 	RootPhone    string `json:"root_phone"`
+	RootAddress  string `json:"root_address"`
 	RootPassword string `json:"root_password"`
 	RootLanguage string `json:"root_language"`
 

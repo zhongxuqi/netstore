@@ -30,14 +30,15 @@ export default class Main extends React.Component {
                 message: "",
             },
             rootEmail: "",
+            rootInfo: {
+                phone: "",
+                address: "",
+            }
         }
 
-        /*
         HttpUtils.get("/openapi/rootinfo",{},((resp)=>{
-            this.setState({rootEmail:resp.rootEmail})
-        }).bind(this), (resp)=>{
-            HttpUtils.alert("["+resp.status+"] "+resp.responseText)
-        })*/
+            this.setState({rootInfo: resp.user})
+        }).bind(this))
     }
 
     onConfirm(title, message, callback, cancelCallback) {
@@ -102,7 +103,7 @@ export default class Main extends React.Component {
                     }
                 </div>
 
-                <Footer address={"test"} phone={"1234"}></Footer>
+                <Footer address={this.state.rootInfo.address} phone={this.state.rootInfo.phone}></Footer>
                 
                 <div id="confirmModal" className="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                     <div className="modal-dialog modal-sm">

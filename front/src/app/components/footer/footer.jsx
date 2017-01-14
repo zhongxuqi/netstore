@@ -8,7 +8,7 @@ export default class Footer extends React.Component {
             <div className="netstore-footer">
                 <h3>{Language.textMap("Contact Me")}</h3>
                 <p>{Language.textMap("Address")}: {this.props.address}</p>
-                <p>{Language.textMap("Phone")}: {this.props.address}</p>
+                <p>{Language.textMap("Phone")}: {this.props.phone}</p>
             </div>
         )
     }

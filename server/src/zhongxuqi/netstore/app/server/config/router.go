@@ -17,10 +17,11 @@ func InitRouter(mainHandler *handler.MainHandler) {
 	openAPIHandler := http.NewServeMux()
 	openAPIHandler.HandleFunc("/openapi/login", mainHandler.Login)
 	openAPIHandler.HandleFunc("/openapi/logout", mainHandler.Logout)
-	openAPIHandler.HandleFunc("/openapi/rootinfo", mainHandler.ActionRootEmail)
+	openAPIHandler.HandleFunc("/openapi/rootinfo_email", mainHandler.ActionRootEmail)
 	openAPIHandler.HandleFunc("/openapi/commodities", mainHandler.PublicActionCommodities)
 	openAPIHandler.HandleFunc("/openapi/commodity_classes", mainHandler.PublicActionCommodityClasses)
 	openAPIHandler.HandleFunc("/openapi/banners", mainHandler.PublicActionBanners)
+	openAPIHandler.HandleFunc("/openapi/rootinfo", mainHandler.PublicActionRootInfo)
 	mainHandler.Mux.HandleFunc("/openapi/", func(w http.ResponseWriter, r *http.Request) {
 		openAPIHandler.ServeHTTP(w, r)
 	})
