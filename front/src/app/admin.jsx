@@ -99,7 +99,9 @@ export default class AdminMain extends React.Component {
                 <nav className="navbar navbar-default topbar" role="navigation">
                     <div className="container-fluid">
                         <div className="navbar-header">
-                            <a className="navbar-brand">控制面板</a>
+                            <a className="navbar-brand" href="/">
+                                <img alt="Brand" src="/favicon.ico" style={{height:"100%"}}/>
+                            </a>
                         </div>
 
                         <div className="collapse navbar-collapse">

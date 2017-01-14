@@ -20,12 +20,23 @@ func (p *MainHandler) PublicActionBanners(w http.ResponseWriter, r *http.Request
 	if r.Method == http.MethodGet {
 		var respBody struct {
 			model.RespBase
-			Banners []model.Banner `json:"banners"`
+			Banners      []model.Banner            `json:"banners"`
+			CommodityMap map[uint]*model.Commodity `json:"commodityMap"`
 		}
 		err := p.BannerColl.Find(nil).Sort("index").All(&respBody.Banners)
 		if err != nil {
 			http.Error(w, "find banners error: "+err.Error(), 500)
 			return
+		}
+		respBody.CommodityMap = make(map[uint]*model.Commodity, 0)
+		for _, banner := range respBody.Banners {
+			var commodity model.Commodity
+			err = p.CommodityColl.Find(&bson.M{"index": banner.CommodityIndex}).One(&commodity)
+			if err != nil {
+				http.Error(w, "find commodity by index error: "+err.Error(), 400)
+				return
+			}
+			respBody.CommodityMap[banner.CommodityIndex] = &commodity
 		}
 		respBody.Status = 200
 		respBody.Message = "success"
@@ -117,6 +128,18 @@ func (p *MainHandler) ActionBanner(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		commodityIndex := bannerBson["commodityIndex"].(int)
+		var n int
+		n, err = p.CommodityColl.Find(&bson.M{"index": commodityIndex}).Count()
+		if err != nil {
+			http.Error(w, "find commodity error: "+err.Error(), 500)
+			return
+		}
+		if n <= 0 {
+			http.Error(w, "commodity index is invalid", 400)
+			return
+		}
+
 		if reqData.Action == "add" {
 			delete(bannerBson, "_id")
 			delete(bannerBson, "index")
@@ -129,8 +152,8 @@ func (p *MainHandler) ActionBanner(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		} else if reqData.Action == "edit" {
-			bannerId = bannerBson["_id"].(string)
-			newIndex := bannerBson["index"].(uint)
+			bannerId = bannerBson["_id"].(bson.ObjectId).Hex()
+			newIndex := uint(bannerBson["index"].(int))
 			var oldBanner model.Banner
 			err = p.BannerColl.FindId(bson.ObjectIdHex(bannerId)).One(&oldBanner)
 			if err != nil {

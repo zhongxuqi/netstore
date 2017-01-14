@@ -1,5 +1,9 @@
 @import '../base/css/base.less';
 
+body {
+    background-color: @background-color;
+}
+
 img.banner {
     text-align: center;
     display: block;
@@ -122,5 +126,29 @@ ul.sidebar-active {
 
     .item-index {
         background-color: @theme-color;
+    }
+}
+
+.netstore-shpname {
+    background-color: rgba(111, 84, 153, 0.8)
+}
+
+.netstore-body {
+    background-color: white;
+    border-width: 0px 1px;
+    border-style: solid;
+    border-color: @border-color;
+    .box-shadow;
+}
+
+.netstore-footer {
+    background-color: @background-color2;
+    color: white;
+    min-height: 180px;
+    padding: 20px 150px;
+
+    p {
+        font-size: 16px;
+        padding: 0px 30px;
     }
 }

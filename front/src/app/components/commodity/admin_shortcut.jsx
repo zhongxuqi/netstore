@@ -30,7 +30,7 @@ export default class AdminShortCut extends React.Component {
                                 <button type="button" className="btn btn-default" onClick={(()=>{this.props.onItemClick("delete", this.props.commodity)}).bind(this)}><span className="glyphicon glyphicon-trash"></span>删除</button>
                         </div>
                     </div>
-                    <h4 className="price-color">{this.props.commodity.price}</h4>
+                    <h4 className="price-color">{this.props.commodity.price.toFixed(2)}</h4>
                     <p>{this.props.commodity.intro}</p>
                 </div>
             </div>

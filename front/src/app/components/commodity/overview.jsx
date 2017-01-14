@@ -9,6 +9,8 @@ export default class CommodityOverView extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            banners: [],
+            commodityMap: {},
             commodities: [],
             commodity: {},
             commodityClasses:[{
@@ -19,11 +21,13 @@ export default class CommodityOverView extends React.Component {
             currCommodityClassValue:"",
         }
 
+        this.getBanners()
         this.getCommodityClasses()
         this.getCommodities()
     }
 
     componentDidMount() {
+        $(".netstore-banner").css("height", document.body.clientWidth*2/5+"px")
         //this.initSideBar()
     }
 
@@ -41,6 +45,17 @@ export default class CommodityOverView extends React.Component {
                 $("#sidebar").css("width", width+"px")
             }
         })
+    }
+
+    getBanners() {
+        HttpUtils.get("/openapi/banners", {}, ((resp)=>{
+            if (resp.banners == null) resp.banners = []
+            if (resp.commodityMap == null) resp.commodityMap = {}
+            this.setState({
+                banners: resp.banners,
+                commodityMap: resp.commodityMap,
+            })
+        }).bind(this))
     }
 
     getCommodityClasses() {
@@ -96,32 +111,41 @@ export default class CommodityOverView extends React.Component {
     render() {
         return (
             <div style={{overflow:"hidden"}}>
-                <div className="carousel slide" data-ride="carousel" style={{
-                    height: "450px",
+                <div className="carousel slide netstore-banner" data-ride="carousel" style={{
                     overflow: "hidden",
                 }}>
                     <ol className="carousel-indicators">
-                        <li data-target="#carousel-example-generic" data-slide-to="0" className="active" onClick={(()=>{
-                            $('.carousel').carousel(0)
-                        }).bind(this)}></li>
-                        <li data-target="#carousel-example-generic" data-slide-to="1" onClick={(()=> {
-                            $('.carousel').carousel(1)
-                        }).bind(this)}></li>
+                        {
+                            this.state.banners.map(((item, index)=>{
+                                return (
+                                    <li key={index} data-target="#carousel-example-generic" data-slide-to={index} 
+                                    className={[{true:"active",false:""}[index==0]].join(" ")}
+                                    onClick={(()=>{
+                                        $('.carousel').carousel(index)
+                                    }).bind(this)}></li>
+                                
+                                )
+                            }).bind(this))
+                        }
                     </ol>
 
-                    <div className="carousel-inner" role="listbox">
-                        <div className="item active">
-                            <img className="banner" src="http://pic.58pic.com/58pic/15/35/05/95258PICQnd_1024.jpg"/>
-                            <div className="carousel-caption">
-                                ...
-                            </div>
-                        </div>
-                        <div className="item">
-                            <img className="banner" src="http://img.sj33.cn/uploads/allimg/201005/20100509135319416.jpg"/>
-                            <div className="carousel-caption">
-                                ...
-                            </div>
-                        </div>
+                    <div className="carousel-inner" role="listbox" style={{height:"100%"}}>
+                        {
+                            this.state.banners.map(((item, index)=>{
+                                return (
+                                    <div key={index} className={["item", {true:"active",false:""}[index==0]].join(" ")} 
+                                        style={{height: "100%", cursor:"pointer"}}
+                                        onClick={this.detailCommodity.bind(this, this.state.commodityMap[item.commodityIndex])}>
+                                        <img className="banner" src={item.imageUrl} style={{height:"100%"}}/>
+                                        <div className="carousel-caption">
+                                            <h3>{this.state.commodityMap[item.commodityIndex].title}</h3>
+                                            <p>{this.state.commodityMap[item.commodityIndex].intro}</p>
+                                        </div>
+                                    </div>
+                                    
+                                )
+                            }).bind(this))
+                        }
                     </div>
 
                     <a className="left carousel-control" role="button" data-slide="prev" onClick={()=>{
@@ -138,7 +162,7 @@ export default class CommodityOverView extends React.Component {
                     </a>
                 </div>
 
-                <div className="container" style={{marginTop:"10px"}}>
+                <div className="container netstore-body" style={{paddingTop:"10px"}}>
                     <div className="col-md-2 col-sm-2">
                         <ul id="sidebar" className="nav netstore-nav-list" role="tablist" style={{position:"relative"}}>
                             {
