@@ -20,6 +20,7 @@ func InitRouter(mainHandler *handler.MainHandler) {
 	openAPIHandler.HandleFunc("/openapi/rootinfo", mainHandler.ActionRootEmail)
 	openAPIHandler.HandleFunc("/openapi/commodities", mainHandler.PublicActionCommodities)
 	openAPIHandler.HandleFunc("/openapi/commodity_classes", mainHandler.PublicActionCommodityClasses)
+	openAPIHandler.HandleFunc("/openapi/banners", mainHandler.PublicActionBanners)
 	mainHandler.Mux.HandleFunc("/openapi/", func(w http.ResponseWriter, r *http.Request) {
 		openAPIHandler.ServeHTTP(w, r)
 	})
@@ -53,6 +54,8 @@ func InitRouter(mainHandler *handler.MainHandler) {
 	rootHandler.HandleFunc("/api/root/commodity", mainHandler.ActionCommodity)
 	rootHandler.HandleFunc("/api/root/commodity/", mainHandler.ActionCommodity)
 	rootHandler.HandleFunc("/api/root/commodities", mainHandler.ActionCommodities)
+	rootHandler.HandleFunc("/api/root/banner", mainHandler.ActionBanner)
+	rootHandler.HandleFunc("/api/root/banner/", mainHandler.ActionBanner)
 	apiHandler.HandleFunc("/api/root/", func(w http.ResponseWriter, r *http.Request) {
 
 		// check permission

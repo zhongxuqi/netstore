@@ -16,7 +16,8 @@ type Commodity struct {
 }
 
 type Banner struct {
-	ID          bson.ObjectId `json:"id" bson:"_id"`
+	ID          bson.ObjectId `json:"id,omitempty" bson:"_id,omitempty"`
 	CommodityId string        `json:"commodityId" bson:"commodityId"`
 	ImageUrl    string        `json:"imageUrl" bson:"imageUrl"`
+	Index       uint          `json:"index" bson:"index"`
 }
