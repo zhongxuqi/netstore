@@ -2,6 +2,7 @@ import React from 'react';
 import marked from 'marked'
 
 import HttpUtils from '../../utils/http.jsx'
+import Language from '../../language/language.jsx'
 
 import CommodityGridItem from './grid_item.jsx'
 
@@ -14,7 +15,7 @@ export default class CommodityOverView extends React.Component {
             commodities: [],
             commodity: {},
             commodityClasses:[{
-                className:"所有商品",
+                className: Language.textMap("All Commodities"),
                 classValue:"",
                 classNum:0,
             }],

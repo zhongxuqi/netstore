@@ -113,7 +113,7 @@ export default class CommodityEditor extends React.Component {
     }
 
     onClickCancel() {
-        this.props.onConfirm(Language.textMap("Alert"), Language.textMap("Whether to ")+Language.textMap("cancel")+Language.textMap("the commodity")+ "?", ()=>{
+        this.props.onConfirm("警告", "确认放弃修改?", ()=>{
             window.location.hash = "#/"
         })
     }

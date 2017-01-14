@@ -47,14 +47,14 @@ export default class AdminMain extends React.Component {
 
     updateUserInfo() {
         HttpUtil.get('/api/root/self', {}, ((resp) => {
-            if (resp.user.language != Language.currLang.short && !(resp.user.language == "" && Language.currLang.short == "en")) {
-                window.location = "?lang=" + resp.user.language
-            }
+            //if (resp.user.language != Language.currLang.short && !(resp.user.language == "" && Language.currLang.short == "en")) {
+            //    window.location = "?lang=" + resp.user.language
+            //}
             this.setState({
                 userInfo: resp.user,
             })
         }).bind(this), ((data) => {
-            window.location = "/login.html"
+            window.location = "/login.html?lang="+Language.currLang.short
         }).bind(this))
     }
 
@@ -117,7 +117,7 @@ export default class AdminMain extends React.Component {
                                 <li><a href="#/editor" onClick={(()=>{
                                     this.setState({tabStatus:"editor"})
                                 }).bind(this)}><span className="glyphicon glyphicon-plus"></span>添加商品</a></li>
-                                <li className="dropdown">
+                                <li className="dropdown" style={{display:"none"}}>
                                     <a className="dropdown-toggle" data-toggle="dropdown">{Language.currLang.value} <span className="caret"></span></a>
                                     <ul className="dropdown-menu" role="menu">
                                         {

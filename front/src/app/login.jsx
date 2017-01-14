@@ -56,8 +56,8 @@ class LoginApp extends React.Component {
                             <input type="password" className="form-control" value={this.state.loginPassword} onChange={this.handleStateChange.bind(this, "loginPassword")}/>
                         </div>
                         <button type="button" className="btn btn-success btn-block" style={{marginBottom:"10px"}} onClick={this.onClickLoginBtn.bind(this)}>{Language.textMap("Login In")}</button>
-                        <button type="button" className="btn btn-primary btn-sm pull-left" href="" onClick={()=>{
-                            window.location="/index.html"
+                        <button type="button" className="btn btn-primary btn-sm pull-left" onClick={()=>{
+                            window.location="/?lang="+Language.currLang.short
                         }}>{Language.textMap("Guest")}</button>
                     </form>
                 </div>

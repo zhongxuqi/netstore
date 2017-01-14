@@ -389,23 +389,23 @@ export default class MarkdownEditor extends React.Component {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span className="sr-only">Close</span></button>
-                                <h4 className="modal-title" id="myModalLabel">Insert Link</h4>
+                                <h4 className="modal-title" id="myModalLabel">插入超链接</h4>
                             </div>
                             <div className="modal-body">
                                 <form role="form">
                                     <div className="form-group">
-                                        <label>LinkTitle</label>
-                                        <input className="form-control" placeholder="Enter link title" value={this.state.link.title} onChange={((event)=>{this.setState({link:{title:event.target.value,url:this.state.link.url}})}).bind(this)}/>
+                                        <label>超链接标题</label>
+                                        <input className="form-control" placeholder="请输入标题" value={this.state.link.title} onChange={((event)=>{this.setState({link:{title:event.target.value,url:this.state.link.url}})}).bind(this)}/>
                                     </div>
                                     <div className="form-group">
-                                        <label>Link address</label>
-                                        <input className="form-control" placeholder="Enter link address" value={this.state.link.url} onChange={((event)=>{this.setState({link:{title:this.state.link.title,url:event.target.value}})}).bind(this)}/>
+                                        <label>超链接地址</label>
+                                        <input className="form-control" placeholder="请输入地址" value={this.state.link.url} onChange={((event)=>{this.setState({link:{title:this.state.link.title,url:event.target.value}})}).bind(this)}/>
                                     </div>
                                 </form>
                             </div>
                             <div className="modal-footer">
-                              <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                              <button type="button" className="btn btn-primary" onClick={this.insertLink.bind(this)}>Affirm</button>
+                              <button type="button" className="btn btn-default" data-dismiss="modal">取消</button>
+                              <button type="button" className="btn btn-primary" onClick={this.insertLink.bind(this)}>提交</button>
                             </div>
                         </div>
                     </div>
@@ -425,7 +425,7 @@ export default class MarkdownEditor extends React.Component {
                                 <form role="form">
                                     <div className="form-group" style={{display:{true:"none",false:"block"}[this.state.image.isFile]}}>
                                         <label>图片链接</label>
-                                        <input type="text" className="form-control" placeholder="Enter Image URL" value={this.state.image.imageUrl} onChange={((event)=>{this.setState({image:{imageUrl:event.target.value,isFile:this.state.image.isFile}})}).bind(this)}/>
+                                        <input type="text" className="form-control" placeholder="请输入图片链接" value={this.state.image.imageUrl} onChange={((event)=>{this.setState({image:{imageUrl:event.target.value,isFile:this.state.image.isFile}})}).bind(this)}/>
                                     </div>
                                     <div className="form-group" style={{display:{true:"block",false:"none"}[this.state.image.isFile]}}>
                                         <label>图片地址</label>
@@ -434,8 +434,8 @@ export default class MarkdownEditor extends React.Component {
                                 </form>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary" onClick={this.insertImage.bind(this)}>Affirm</button>
+                                <button type="button" className="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" className="btn btn-primary" onClick={this.insertImage.bind(this)}>提交</button>
                             </div>
                         </div>
                     </div>
@@ -455,7 +455,7 @@ export default class MarkdownEditor extends React.Component {
                                 <form role="form">
                                     <div className="form-group" style={{display:{true:"none",false:"block"}[this.state.audio.isFile]}}>
                                         <label>MP3链接</label>
-                                        <input type="text" className="form-control" placeholder="Enter MP3 URL" value={this.state.audio.audioUrl} onChange={((event)=>{this.setState({audio:{audioUrl:event.target.value,isFile:this.state.audio.isFile}})}).bind(this)}/>
+                                        <input type="text" className="form-control" placeholder="请输入MP3链接" value={this.state.audio.audioUrl} onChange={((event)=>{this.setState({audio:{audioUrl:event.target.value,isFile:this.state.audio.isFile}})}).bind(this)}/>
                                     </div>
                                     <div className="form-group" style={{display:{true:"block",false:"none"}[this.state.audio.isFile]}}>
                                         <label>MP3地址</label>
@@ -464,8 +464,8 @@ export default class MarkdownEditor extends React.Component {
                                 </form>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary" onClick={this.insertAudio.bind(this)}>Affirm</button>
+                                <button type="button" className="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" className="btn btn-primary" onClick={this.insertAudio.bind(this)}>提交</button>
                             </div>
                         </div>
                     </div>
@@ -485,7 +485,7 @@ export default class MarkdownEditor extends React.Component {
                                 <form role="form">
                                     <div className="form-group" style={{display:{true:"none",false:"block"}[this.state.video.isFile]}}>
                                         <label>MP4链接</label>
-                                        <input type="text" className="form-control" placeholder="Enter Video URL" value={this.state.video.videoUrl} onChange={((event)=>{this.setState({video:{videoUrl:event.target.value,isFile:this.state.video.isFile}})}).bind(this)}/>
+                                        <input type="text" className="form-control" placeholder="请输入MP4链接" value={this.state.video.videoUrl} onChange={((event)=>{this.setState({video:{videoUrl:event.target.value,isFile:this.state.video.isFile}})}).bind(this)}/>
                                     </div>
                                     <div className="form-group" style={{display:{true:"block",false:"none"}[this.state.video.isFile]}}>
                                         <label>MP4地址</label>
@@ -494,8 +494,8 @@ export default class MarkdownEditor extends React.Component {
                                 </form>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary" onClick={this.insertVideo.bind(this)}>Affirm</button>
+                                <button type="button" className="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" className="btn btn-primary" onClick={this.insertVideo.bind(this)}>提交</button>
                             </div>
                         </div>
                     </div>

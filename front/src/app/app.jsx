@@ -74,7 +74,7 @@ export default class Main extends React.Component {
                 <div style={{position:'absolute', zIndex: "10", marginTop:"15px", width: "100%"}}>
                     <div className="container netstore-table" style={{margin: "0px auto", color:"white"}}>
                         <h3 className="netstore-table-cell" style={{width:"99%", cursor:"pointer"}}
-                            onClick={()=>{window.location="/admin.html"}}>
+                            onClick={()=>{window.location="/admin.html?lang="+Language.currLang.short}}>
                             <span className="label label-default netstore-shopname">Shop Name</span>
                         </h3>
                         <div className="dropdown">

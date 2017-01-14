@@ -92,5 +92,12 @@ chineseTextMap["Guest"] = "访客"
 chineseTextMap["Resume"] = "简历"
 chineseTextMap["Repeat Password"] = "重复密码"
 chineseTextMap["Register"] = "注册"
+chineseTextMap["All Commodities"] = "所有商品"
+chineseTextMap["Contact Me"] = "联系我们"
+chineseTextMap["Address"] = "地址"
+chineseTextMap["Phone"] = "手机"
+chineseTextMap["Commodity Manager"] = "商品管理"
+chineseTextMap["Manager"] = "管理"
+chineseTextMap["Add Commodity"] = "添加商品"
 
 export default chineseTextMap;
