@@ -22,6 +22,7 @@ func InitRouter(mainHandler *handler.MainHandler) {
 	openAPIHandler.HandleFunc("/openapi/commodity_classes", mainHandler.PublicActionCommodityClasses)
 	openAPIHandler.HandleFunc("/openapi/banners", mainHandler.PublicActionBanners)
 	openAPIHandler.HandleFunc("/openapi/rootinfo", mainHandler.PublicActionRootInfo)
+	openAPIHandler.HandleFunc("/openapi/commodity_byindex/", mainHandler.PublicActionCommodityByIndex)
 	mainHandler.Mux.HandleFunc("/openapi/", func(w http.ResponseWriter, r *http.Request) {
 		openAPIHandler.ServeHTTP(w, r)
 	})

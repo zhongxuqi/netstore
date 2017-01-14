@@ -1,11 +1,14 @@
-function get(url, data, successFunc, errorFunc) {
+function get(url, data, successFunc, errorFunc, finalFunc) {
     $.ajax({
         type: 'GET',
         url: url,
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        success: successFunc,
+        success: (resp)=>{
+            successFunc(resp)
+            if (finalFunc != null) finalFunc()
+        },
         error: (resp)=>{
             if (errorFunc != undefined) {
                 errorFunc(resp)
@@ -23,7 +26,10 @@ function post(url, data, successFunc, errorFunc) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        success: successFunc,
+        success: (resp)=>{
+            successFunc(resp)
+            if (finalFunc != null) finalFunc()
+        },
         error: (resp)=>{
             if (errorFunc != undefined) {
                 errorFunc(resp)
@@ -41,7 +47,10 @@ function deleteAction(url, data, successFunc, errorFunc) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        success: successFunc,
+        success: (resp)=>{
+            successFunc(resp)
+            if (finalFunc != null) finalFunc()
+        },
         error: (resp)=>{
             if (errorFunc != undefined) {
                 errorFunc(resp)

@@ -20,16 +20,17 @@ export default class CommodityOverView extends React.Component {
                 classNum:0,
             }],
             currCommodityClassValue:"",
+            isLoading: false,
         }
 
         this.getBanners()
         this.getCommodityClasses()
-        this.getCommodities()
     }
 
     componentDidMount() {
         $(".netstore-banner").css("height", document.body.clientWidth*2/5+"px")
         //this.initSideBar()
+        this.getCommodities()
     }
 
     initSideBar() {
@@ -87,6 +88,11 @@ export default class CommodityOverView extends React.Component {
     }
         
     getCommodities() {
+        this.setState({
+            isLoading:true,
+            commodities:[],
+            totalNum: 0,
+        })
         HttpUtils.get("/openapi/commodities", {
             class: this.state.currCommodityClassValue,
         }, ((resp)=>{
@@ -95,6 +101,8 @@ export default class CommodityOverView extends React.Component {
                 commodities: resp.commodities,
                 totalNum: resp.totalNum,
             })
+        }).bind(this), null, (()=>{
+            this.setState({isLoading:false})
         }).bind(this))
     }
 
@@ -210,6 +218,10 @@ export default class CommodityOverView extends React.Component {
                     <div className="col-md-10 col-sm-10" onLoad={()=>{
                         $(".grid-item-image").css("height", $(".grid-item-image")[0].clientWidth+"px")
                     }}>
+                        <h1 style={{textAlign:"center",display:{true:"block", false:"none"}[this.state.isLoading]}}>
+                            <i className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                            <span className="sr-only">Loading...</span>
+                        </h1>
                         {
                             this.state.commodities.map((commodity, index)=>{
                                 return (

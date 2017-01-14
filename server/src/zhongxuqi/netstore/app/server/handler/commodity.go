@@ -174,3 +174,34 @@ func (p *MainHandler) ActionCommodity(w http.ResponseWriter, r *http.Request) {
 
 	http.Error(w, "Not Found", 404)
 }
+
+func (p *MainHandler) PublicActionCommodityByIndex(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		cmds := strings.Split(r.URL.Path, "/")
+		if len(cmds) < 4 {
+			http.Error(w, errors.ERROR_EMPTY_ID.Error(), 400)
+			return
+		}
+		commodityIndex, err := strconv.ParseUint(cmds[3], 10, 64)
+		if err != nil {
+			http.Error(w, "Parse commodity index error: "+err.Error(), 400)
+			return
+		}
+
+		var respBody struct {
+			model.RespBase
+			Commodity model.Commodity `json:"commodity"`
+		}
+		err = p.CommodityColl.Find(&bson.M{"index": commodityIndex}).One(&respBody.Commodity)
+		if err != nil {
+			http.Error(w, "find commodity by index error: "+err.Error(), 400)
+			return
+		}
+		respBody.Status = 200
+		respBody.Message = "success"
+		respByte, _ := json.Marshal(&respBody)
+		w.Write(respByte)
+		return
+	}
+	http.Error(w, "Not Found", 404)
+}

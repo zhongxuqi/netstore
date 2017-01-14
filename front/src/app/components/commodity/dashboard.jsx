@@ -21,17 +21,31 @@ export default class CommodityDashboard extends React.Component {
                 subClass: "",
             },
             commodityClasses: [],
+            isLoading: false,
         };
-        this.getCommodities()
         this.getCommodityClasses()
     }
 
+    componentDidMount() {
+        this.getCommodities()
+    }
+
     getCommodities() {
+        this.setState({
+            isLoading: true,
+            commodityClasses: [],
+            totalNum: 0,
+        })
+        
         HttpUtils.get("/api/root/commodities", this.state.filter, ((resp)=>{
             if (resp.commodities == null) resp.commodities = []
             this.setState({
                 commodities: resp.commodities,
                 totalNum: resp.totalNum,
+            })
+        }).bind(this), null, (()=>{
+            this.setState({
+                isLoading: false,
             })
         }).bind(this))
     }
@@ -74,7 +88,7 @@ export default class CommodityDashboard extends React.Component {
         if (action == "edit") {
             window.location="#/editor/"+commodity.id
         } else if (action == "delete") {
-            this.props.onConfirm(Language.textMap("Alert"), Language.textMap("Whether to ")+Language.textMap("delete")+Language.textMap("the commodity")+ "?", (()=>{
+            this.props.onConfirm("警告", "是否删除该商品?", (()=>{
                 HttpUtils.delete("/api/root/commodity/"+commodity.id,{},((resp)=>{
                     this.getCommodities()
                 }).bind(this))
@@ -150,7 +164,7 @@ export default class CommodityDashboard extends React.Component {
 
                         <div className="col-md-12">
                             <button type="button" className="btn btn-default pull-right" style={{width:"100px"}} onClick={this.getCommodities.bind(this)}>
-                                <span className="glyphicon glyphicon-search"></span>查询
+                                <span className="glyphicon glyphicon-search" style={{paddingRight:"7px"}}></span>查询
                             </button>
                         </div>
                     </div>
@@ -159,6 +173,10 @@ export default class CommodityDashboard extends React.Component {
                 <div className="col-md-10 col-md-offset-1">
                     <ListTitle commodityTotal={this.state.totalNum}></ListTitle>
                     <CommodityList commodities={this.state.commodities} onItemClick={this.onItemClick.bind(this)}></CommodityList>
+                    <h1 style={{textAlign:"center",display:{true:"block", false:"none"}[this.state.isLoading]}}>
+                        <i className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                        <span className="sr-only">加载中...</span>
+                    </h1>
                 </div>
 
                 <div className="modal fade" id="commodityDetailModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

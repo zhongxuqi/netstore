@@ -12,24 +12,39 @@ export default class Banner extends React.Component {
                 imageUrl: "",
                 index: 0,
                 commodityIndex: 0,
-            }
+            },
+            isSubmit: false,
+            currCommodity: null,
+            isLoading: false,
         }
+    }
 
+    componentDidMount() {
         this.getBanners()
     }
 
     getBanners() {
+        this.setState({
+            isLoading: true,
+            banners: [],
+        })
         HttpUtils.get("/openapi/banners", {}, ((resp)=>{
-            console.log(resp)
             if (resp.banners == null) resp.banners = []
             this.setState({banners: resp.banners})
+        }).bind(this), null, (()=>{
+            this.setState({isLoading:false})
         }).bind(this))
     }
 
     modalBanner(banner) {
+        let copy = {}
+        Object.assign(copy, banner)
         if (banner != null) {
-            this.setState({currBanner: banner})
+            this.state.currBanner = copy
+            this.setState({isSubmit:true})
+            this.checkCommodityIndex()
         } else {
+            this.setState({isSubmit:false})
             this.setState({currBanner: {
                 imageUrl:"",
                 index:0,
@@ -47,6 +62,25 @@ export default class Banner extends React.Component {
             this.state.currBanner[attrName] = event.target.value
         }
         this.setState({})
+        this.checkCommodityIndex()
+    }
+
+    checkCommodityIndex() {
+        let commodityIndex = this.state.currBanner.commodityIndex
+        if (commodityIndex <= 0) {
+            return
+        }
+
+        HttpUtils.get("/openapi/commodity_byindex/"+commodityIndex, {}, ((resp)=>{
+            this.setState({
+                currCommodity: resp.commodity,
+                currCommodityTitle: resp.commodity.title,
+            })
+        }).bind(this), ((resp)=>{
+            this.setState({
+                currCommodity: null
+            })
+        }).bind(this))
     }
     
     onSelectImg() {
@@ -80,12 +114,13 @@ export default class Banner extends React.Component {
     }
 
     postBanner(banner) {
-        if (banner.imageUrl == null || banner.imageUrl.length == 0) {
-            HttpUtils.alert("请选择图片")
-            return
-        }
+        this.setState({isSubmit:true})
         if (banner.commodityIndex == null || banner.commodityIndex <= 0) {
             HttpUtils.alert("请输入商品编号")
+            return
+        }
+        if (banner.imageUrl == null || banner.imageUrl.length == 0) {
+            HttpUtils.alert("请选择图片")
             return
         }
 
@@ -108,7 +143,7 @@ export default class Banner extends React.Component {
 
     deleteBanner(bannerId) {
         if (bannerId == null || bannerId.length == 0) {
-            HttpUtils.alert("id is empty")
+            HttpUtils.alert("ID为空")
             return
         }
 
@@ -147,7 +182,6 @@ export default class Banner extends React.Component {
                                                     let copyItem = {}
                                                     Object.assign(copyItem, item)
                                                     copyItem.index = parseInt(event.target.value)
-                                                    console.log(copyItem)
                                                     this.postBanner(copyItem)
                                                 }).bind(this)}>
                                                 {
@@ -176,6 +210,11 @@ export default class Banner extends React.Component {
                     </tbody>
                 </table>
 
+                <h1 style={{textAlign:"center",display:{true:"block", false:"none"}[this.state.isLoading]}}>
+                    <i className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                    <span className="sr-only">加载中...</span>
+                </h1>
+
                 <div className="modal fade" id="bannerModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">
@@ -185,12 +224,27 @@ export default class Banner extends React.Component {
                             </div>
                             <div className="modal-body">
                                 <form className="form-horizontal" role="form">
-                                    <div className="form-group">
+                                    <div className={["form-group", {
+                                        true: {
+                                            true:"has-feedback has-error", 
+                                            false:"has-success has-feedback"
+                                        }[this.state.currCommodity==null],
+                                        false: ""
+                                    }[this.state.isSubmit]].join(" ")}>
                                         <label className="col-sm-2 control-label">商品编号</label>
                                         <div className="col-sm-10">
                                             <input type="number" className="form-control" placeholder="请输入商品编号"
                                                 value={this.state.currBanner.commodityIndex} 
                                                 onChange={this.updateCurrBanner.bind(this, "commodityIndex")}/>
+                                            <span className="glyphicon glyphicon-ok form-control-feedback" style={{
+                                                display:{true:"inline",false:"none"}[this.state.isSubmit&&this.state.currCommodity!=null]
+                                            }}></span>
+                                            <span className="glyphicon glyphicon-remove form-control-feedback" style={{
+                                                display:{true:"inline",false:"none"}[this.state.isSubmit&&this.state.currCommodity==null],
+                                            }}></span>
+                                            <label className="control-label" style={{
+                                                display:{true:"inline",false:"none"}[this.state.isSubmit]
+                                            }}>{{true:"无效商品编号",false:"标题: "+this.state.currCommodityTitle}[this.state.currCommodity==null]}</label>
                                         </div>
                                     </div>
                                     <div className="form-group">

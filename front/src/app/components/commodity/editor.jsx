@@ -18,7 +18,8 @@ export default class CommodityEditor extends React.Component {
                 class: "",
                 subClass: "",
                 detailIntro: "",
-            }
+            },
+            classes: [],
         }
         if (this.props.routeParams != null && this.props.routeParams.id != null && this.props.routeParams.id.length > 0) {
             HttpUtils.get("/api/root/commodity/"+this.props.routeParams.id,{},((resp)=>{
@@ -30,6 +31,17 @@ export default class CommodityEditor extends React.Component {
                 HttpUtils.alert("["+resp.status+"] "+resp.responseText)
             })
         }
+
+        HttpUtils.get("/openapi/commodity_classes", {}, ((resp)=>{
+            let classes = []
+            for (let key in resp.classMap) {
+                classes.push(key)
+            }
+            this.setState({classes: classes})
+            $("#commodity-class").typeahead({
+                source: classes,
+            })
+        }).bind(this))
     }
 
     componentDidMount() {
@@ -166,7 +178,7 @@ export default class CommodityEditor extends React.Component {
                                     </div>
                                     <div className={["form-group has-feedback", {true:"has-error", false:""}[this.state.commodity.class.length==0&&this.state.hasSubmit]].join(" ")}>
                                         <label>分类</label>
-                                        <input type="text" className="form-control" placeholder="请输入分类" value={this.state.commodity.class} onChange={((event)=>{
+                                        <input id="commodity-class" type="text" className="form-control" placeholder="请输入分类" value={this.state.commodity.class} onChange={((event)=>{
                                             this.state.commodity.class = event.target.value
                                             this.setState({})
                                         }).bind(this)}/>
