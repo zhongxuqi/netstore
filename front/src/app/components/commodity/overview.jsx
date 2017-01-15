@@ -31,6 +31,9 @@ export default class CommodityOverView extends React.Component {
         $(".netstore-banner").css("height", document.body.clientWidth*2/5+"px")
         //this.initSideBar()
         this.getCommodities()
+        $("#commodityDetailModal").on("hidden.bs.modal", ()=>{
+            $("#commodityDetailModal #content")[0].innerHTML = ""
+        })
     }
 
     initSideBar() {

@@ -28,6 +28,9 @@ export default class CommodityDashboard extends React.Component {
 
     componentDidMount() {
         this.getCommodities()
+        $("#commodityDetailModal").on("hidden.bs.modal", ()=>{
+            $("#commodityDetailModal #content")[0].innerHTML = ""
+        })
     }
 
     getCommodities() {
