@@ -19,6 +19,8 @@ type Config struct {
 	RootAddress  string `json:"root_address"`
 	RootPassword string `json:"root_password"`
 	RootLanguage string `json:"root_language"`
+	ShopName     string `json:"shopname"`
+	ShopInfo     string `json:"shopinfo"`
 
 	DBConfig        DBConfig  `json:"dbConfig"`
 	OssConfig       OSSConfig `json:"ossConfig"`

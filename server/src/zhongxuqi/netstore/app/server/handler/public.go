@@ -81,7 +81,9 @@ func (p *MainHandler) PublicActionRootInfo(w http.ResponseWriter, r *http.Reques
 	if r.Method == http.MethodGet {
 		var ret struct {
 			model.RespBase
-			User model.User `json:"user"`
+			User     model.User `json:"user"`
+			ShopName string     `json:"shopname"`
+			ShopInfo string     `json:"shopinfo"`
 		}
 		ret.User = model.User{
 			Role:     model.ROOT,
@@ -89,6 +91,8 @@ func (p *MainHandler) PublicActionRootInfo(w http.ResponseWriter, r *http.Reques
 			Phone:    p.Config.RootPhone,
 			Address:  p.Config.RootAddress,
 		}
+		ret.ShopName = p.Config.ShopName
+		ret.ShopInfo = p.Config.ShopInfo
 
 		ret.Status = 200
 		ret.Message = "success"

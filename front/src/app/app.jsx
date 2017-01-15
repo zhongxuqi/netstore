@@ -37,7 +37,11 @@ export default class Main extends React.Component {
         }
 
         HttpUtils.get("/openapi/rootinfo",{},((resp)=>{
-            this.setState({rootInfo: resp.user})
+            this.setState({
+                rootInfo: resp.user,
+                shopname: resp.shopname,
+                shopinfo: resp.shopinfo,
+            })
         }).bind(this))
     }
 
@@ -75,7 +79,10 @@ export default class Main extends React.Component {
                     <div className="container netstore-table" style={{margin: "0px auto", color:"white"}}>
                         <h3 className="netstore-table-cell" style={{width:"99%", cursor:"pointer"}}
                             onClick={()=>{window.location="/admin.html?lang="+Language.currLang.short}}>
-                            <span className="label label-default netstore-shopname">Shop Name</span>
+                            <span className="label label-default netstore-shopname">
+                                {this.state.shopname}
+                                <small>{this.state.shopinfo}</small>
+                            </span>
                         </h3>
                         <div className="dropdown">
                             <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
