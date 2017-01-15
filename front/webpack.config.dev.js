@@ -26,11 +26,33 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
+        //new webpack.optimize.UglifyJsPlugin({
+        //    compress: {
+        //        warnings: false
+        //    }
+        //}),
+        new BrowserSyncPlugin({
+            host: 'localhost',
+            port: 8080,
+            proxy: 'localhost:8888',
+            files: 'dist/*',
+            //server: {
+            //    //指定服务器启动根目录
+            //    baseDir: './dist'
+            //}
+        })
     ],
+    //devServer: {
+    //    historyApiFallback:true,
+    //    hot:true,
+    //    inline:true,
+    //    progress:true,
+    //    proxy: {
+    //        '/openapi': {
+    //              target: 'http://localhost:8888/',
+    //              secure: false
+    //        }
+    //    }
+    //}
     devtool: 'source-map',
 }
