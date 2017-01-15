@@ -202,27 +202,16 @@ export default class MarkdownEditor extends React.Component {
             
             let formData = new FormData()
             formData.append("imagefile", imagefile)
-            $.ajax({
-                type: "POST",
-                url: "/api/root/upload_image",
-                data: formData,
-                processData: false,
-                contentType: false,
-                dataType: "json",
-                success: (resp) => {
-                    let startPoint = this.codemirror.getCursor("start")
-                    this.codemirror.replaceSelection("<img src=\""+resp.imageUrl+"\" style=\"max-width:100%\"></img>\n", startPoint)
-                    this.codemirror.setSelection({
-                        line: startPoint.line+1,
-                        ch: 0,
-                    })
-                    this.codemirror.focus()
-                    $("#imageModal").modal("hide")
-                },
-                error: (resp) => {
-                    HttpUtils.alert("["+resp.status+"] "+resp.responseText)
-                },
-            })
+            HttpUtils.postFile("/api/root/upload_image", formData, ((resp)=>{
+                let startPoint = this.codemirror.getCursor("start")
+                this.codemirror.replaceSelection("<img src=\""+resp.imageUrl+"\" style=\"max-width:100%\"></img>\n", startPoint)
+                this.codemirror.setSelection({
+                    line: startPoint.line+1,
+                    ch: 0,
+                })
+                this.codemirror.focus()
+                $("#imageModal").modal("hide")
+            }).bind(this))
         } else {
             let imageUrl = this.state.image.imageUrl
             
@@ -259,27 +248,16 @@ export default class MarkdownEditor extends React.Component {
             
             let formData = new FormData()
             formData.append("audiofile", audiofile)
-            $.ajax({
-                type: "POST",
-                url: "/api/root/upload_audio",
-                data: formData,
-                processData: false,
-                contentType: false,
-                dataType: "json",
-                success: (resp) => {
-                    let startPoint = this.codemirror.getCursor("start")
-                    this.codemirror.replaceSelection("<audio src=\""+resp.audioUrl+"\" controls=\"controls\" style=\"max-width:90%\"></audio>\n", startPoint)
-                    this.codemirror.setSelection({
-                        line: startPoint.line+1,
-                        ch: 0,
-                    })
-                    this.codemirror.focus()
-                    $("#audioModal").modal("hide")
-                },
-                error: (resp) => {
-                    HttpUtils.alert("["+resp.status+"] "+resp.responseText)
-                },
-            })
+            HttpUtils.postFile("/api/root/upload_audio", formData, ((resp)=>{
+                let startPoint = this.codemirror.getCursor("start")
+                this.codemirror.replaceSelection("<audio src=\""+resp.audioUrl+"\" controls=\"controls\" style=\"max-width:100%\"></audio>\n", startPoint)
+                this.codemirror.setSelection({
+                    line: startPoint.line+1,
+                    ch: 0,
+                })
+                this.codemirror.focus()
+                $("#audioModal").modal("hide")
+            }).bind(this))
         } else {
             let audioUrl = this.state.audio.audioUrl
             
@@ -316,27 +294,16 @@ export default class MarkdownEditor extends React.Component {
             
             let formData = new FormData()
             formData.append("videofile", videofile)
-            $.ajax({
-                type: "POST",
-                url: "/api/root/upload_video",
-                data: formData,
-                processData: false,
-                contentType: false,
-                dataType: "json",
-                success: (resp) => {
-                    let startPoint = this.codemirror.getCursor("start")
-                    this.codemirror.replaceSelection("<video src=\""+resp.videoUrl+"\" controls=\"controls\" style=\"max-width:90%\"></video>\n", startPoint)
-                    this.codemirror.setSelection({
-                        line: startPoint.line+1,
-                        ch: 0,
-                    })
-                    this.codemirror.focus()
-                    $("#videoModal").modal("hide")
-                },
-                error: (resp) => {
-                    HttpUtils.alert("["+resp.status+"] "+resp.responseText)
-                },
-            })
+            HttpUtils.postFile("/api/root/upload_video", formData, ((resp)=>{
+                let startPoint = this.codemirror.getCursor("start")
+                this.codemirror.replaceSelection("<video src=\""+resp.videoUrl+"\" controls=\"controls\" style=\"max-width:100%\"></video>\n", startPoint)
+                this.codemirror.setSelection({
+                    line: startPoint.line+1,
+                    ch: 0,
+                })
+                this.codemirror.focus()
+                $("#videoModal").modal("hide")
+            }).bind(this))
         } else {
             let videoUrl = this.state.video.videoUrl
             

@@ -61,21 +61,10 @@ export default class CommodityEditor extends React.Component {
         
         let formData = new FormData()
         formData.append("imagefile", imagefile)
-        $.ajax({
-            type: "POST",
-            url: "/api/root/upload_image",
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: "json",
-            success: (resp) => {
-                this.state.commodity.imageUrl = resp.imageUrl
-                this.setState({})
-            },
-            error: (resp) => {
-                HttpUtils.alert("["+resp.status+"] "+resp.responseText)
-            },
-        })
+        HttpUtils.postFile("/api/root/upload_image", formData, ((resp)=>{
+            this.state.commodity.imageUrl = resp.imageUrl
+            this.setState({})
+        }).bind(this))
     }
 
     submit() {

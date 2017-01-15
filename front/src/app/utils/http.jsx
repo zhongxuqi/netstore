@@ -1,3 +1,5 @@
+import NProgress from 'nprogress'
+
 function get(url, data, successFunc, errorFunc, finalFunc) {
     $.ajax({
         type: 'GET',
@@ -61,6 +63,26 @@ function deleteAction(url, data, successFunc, errorFunc) {
     })
 }
 
+function postFile(url, formData, successFunc, errorFunc) {
+    NProgress.start()
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        success: (resp) => {
+            successFunc(resp)
+            NProgress.done()
+        },
+        error: (resp) => {
+            HttpUtils.alert("["+resp.status+"] "+resp.responseText)
+            NProgress.done()
+        },
+    })
+}
+
 function alert(errMsg) {
     $.growl.error({ message: errMsg });
 }
@@ -72,6 +94,7 @@ function notice(noticeMsg) {
 export default {
     get: get,
     post: post,
+    postFile: postFile,
     delete: deleteAction,
     alert: alert,
     notice: notice,
