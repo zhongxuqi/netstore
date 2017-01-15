@@ -61,11 +61,11 @@ func InitRouter(mainHandler *handler.MainHandler) {
 	apiHandler.HandleFunc("/api/root/", func(w http.ResponseWriter, r *http.Request) {
 
 		// check permission
-		err := mainHandler.CheckRoot(r)
-		if err != nil {
-			http.Error(w, "check permission error: "+err.Error(), 400)
-			return
-		}
+		// err := mainHandler.CheckRoot(r)
+		// if err != nil {
+		// 	http.Error(w, "check permission error: "+err.Error(), 400)
+		// 	return
+		// }
 
 		rootHandler.ServeHTTP(w, r)
 	})
