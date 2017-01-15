@@ -211,7 +211,7 @@ export default class MarkdownEditor extends React.Component {
                 dataType: "json",
                 success: (resp) => {
                     let startPoint = this.codemirror.getCursor("start")
-                    this.codemirror.replaceSelection("<img src=\""+resp.imageUrl+"\" style=\"max-width:90%\"></img>\n", startPoint)
+                    this.codemirror.replaceSelection("<img src=\""+resp.imageUrl+"\" style=\"max-width:100%\"></img>\n", startPoint)
                     this.codemirror.setSelection({
                         line: startPoint.line+1,
                         ch: 0,
@@ -231,7 +231,7 @@ export default class MarkdownEditor extends React.Component {
                 return
             }
             let startPoint = this.codemirror.getCursor("start")
-            this.codemirror.replaceSelection("<img src=\""+imageUrl+"\" style=\"max-width:90%\"></img>\n", startPoint)
+            this.codemirror.replaceSelection("<img src=\""+imageUrl+"\" style=\"max-width:100%\"></img>\n", startPoint)
             this.codemirror.setSelection({
                 line: startPoint.line+1,
                 ch: 0,
