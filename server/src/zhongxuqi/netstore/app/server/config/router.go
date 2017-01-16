@@ -1,9 +1,12 @@
 package config
 
 import (
+	"fmt"
 	"net/http"
+	"time"
 
 	"zhongxuqi/netstore/app/server/handler"
+	"zhongxuqi/netstore/utils"
 )
 
 // InitRouter init the router of server
@@ -25,6 +28,7 @@ func InitRouter(mainHandler *handler.MainHandler) {
 	openAPIHandler.HandleFunc("/openapi/commodity_byindex/", mainHandler.PublicActionCommodityByIndex)
 	mainHandler.Mux.HandleFunc("/openapi/", func(w http.ResponseWriter, r *http.Request) {
 		openAPIHandler.ServeHTTP(w, r)
+		fmt.Printf("%s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.URL.Path)
 	})
 
 	//---------------------------------
@@ -46,6 +50,8 @@ func InitRouter(mainHandler *handler.MainHandler) {
 		}
 
 		apiHandler.ServeHTTP(w, r)
+
+		fmt.Printf("%s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.URL.Path)
 	})
 
 	// setup /api/root/ handler
@@ -71,5 +77,9 @@ func InitRouter(mainHandler *handler.MainHandler) {
 	})
 
 	// init web file handler
-	mainHandler.Mux.Handle("/", http.FileServer(http.Dir("../front/dist")))
+	fileHandler := http.FileServer(http.Dir("../front/dist"))
+	mainHandler.Mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fileHandler.ServeHTTP(w, r)
+		fmt.Printf("%s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.URL.Path)
+	})
 }
