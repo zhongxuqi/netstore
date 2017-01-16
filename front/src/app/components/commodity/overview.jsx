@@ -175,7 +175,7 @@ export default class CommodityOverView extends React.Component {
                 </div>
 
                 <div className="container netstore-body" style={{paddingTop:"10px"}}>
-                    <div className="col-md-2 col-sm-2">
+                    <div className="col-md-2 col-sm-2 col-xs-12 clearfix" style={{marginBottom: "10px"}}>
                         <ul id="sidebar" className="nav netstore-nav-list" role="tablist" style={{position:"relative"}}>
                             {
                                 this.state.commodityClasses.map(((item, i)=>{
@@ -218,7 +218,7 @@ export default class CommodityOverView extends React.Component {
                             }
                         </ul>
                     </div>
-                    <div className="col-md-10 col-sm-10" onLoad={()=>{
+                    <div className="col-md-10 col-sm-10 col-xs-12" onLoad={()=>{
                         $(".grid-item-image").css("height", $(".grid-item-image")[0].clientWidth+"px")
                     }}>
                         <h1 style={{textAlign:"center",display:{true:"block", false:"none"}[this.state.isLoading]}}>
@@ -228,7 +228,7 @@ export default class CommodityOverView extends React.Component {
                         {
                             this.state.commodities.map((commodity, index)=>{
                                 return (
-                                    <div className="col-md-3 col-sm-4" key={index} style={{padding:"0px 10px"}}>
+                                    <div className="col-md-3 col-sm-4 col-xs-6" key={index} style={{padding:"0px 10px"}}>
                                         <CommodityGridItem onItemClick={this.detailCommodity.bind(this, commodity)} commodity={commodity}></CommodityGridItem>
                                     </div>
                                 )
