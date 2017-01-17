@@ -81,21 +81,21 @@ func (p *LocalOss) InitOss(handler *http.ServeMux, cfg *model.OSSConfig) {
 	imgFileHandler := http.FileServer(http.Dir("../media"))
 	handler.HandleFunc("/lowtea_img/", func(w http.ResponseWriter, r *http.Request) {
 		imgFileHandler.ServeHTTP(w, r)
-		fmt.Printf("%s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.URL.Path)
+		fmt.Printf("%s %s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.Method, r.URL.Path)
 	})
 
 	// init audio handler
 	audioFileHandler := http.FileServer(http.Dir("../media"))
 	handler.HandleFunc("/lowtea_audio/", func(w http.ResponseWriter, r *http.Request) {
 		audioFileHandler.ServeHTTP(w, r)
-		fmt.Printf("%s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.URL.Path)
+		fmt.Printf("%s %s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.Method, r.URL.Path)
 	})
 
 	// init video handler
 	videoFileHandler := http.FileServer(http.Dir("../media"))
 	handler.HandleFunc("/lowtea_video/", func(w http.ResponseWriter, r *http.Request) {
 		videoFileHandler.ServeHTTP(w, r)
-		fmt.Printf("%s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.URL.Path)
+		fmt.Printf("%s %s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.Method, r.URL.Path)
 	})
 }
 

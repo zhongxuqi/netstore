@@ -28,7 +28,7 @@ func InitRouter(mainHandler *handler.MainHandler) {
 	openAPIHandler.HandleFunc("/openapi/commodity_byindex/", mainHandler.PublicActionCommodityByIndex)
 	mainHandler.Mux.HandleFunc("/openapi/", func(w http.ResponseWriter, r *http.Request) {
 		openAPIHandler.ServeHTTP(w, r)
-		fmt.Printf("%s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.URL.Path)
+		fmt.Printf("%s %s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.Method, r.URL.Path)
 	})
 
 	//---------------------------------
@@ -51,7 +51,7 @@ func InitRouter(mainHandler *handler.MainHandler) {
 
 		apiHandler.ServeHTTP(w, r)
 
-		fmt.Printf("%s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.URL.Path)
+		fmt.Printf("%s %s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.Method, r.URL.Path)
 	})
 
 	// setup /api/root/ handler
@@ -80,6 +80,6 @@ func InitRouter(mainHandler *handler.MainHandler) {
 	fileHandler := http.FileServer(http.Dir("../front/dist"))
 	mainHandler.Mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fileHandler.ServeHTTP(w, r)
-		fmt.Printf("%s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.URL.Path)
+		fmt.Printf("%s %s %s %s\n", time.Now().String(), utils.GetRemoteIp(r), r.Method, r.URL.Path)
 	})
 }

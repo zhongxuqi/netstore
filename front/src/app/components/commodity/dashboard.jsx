@@ -36,7 +36,7 @@ export default class CommodityDashboard extends React.Component {
     getCommodities() {
         this.setState({
             isLoading: true,
-            commodityClasses: [],
+            commodities: [],
             totalNum: 0,
         })
         
