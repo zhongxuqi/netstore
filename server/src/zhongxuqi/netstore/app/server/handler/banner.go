@@ -23,19 +23,22 @@ func (p *MainHandler) PublicActionBanners(w http.ResponseWriter, r *http.Request
 			Banners      []model.Banner            `json:"banners"`
 			CommodityMap map[uint]*model.Commodity `json:"commodityMap"`
 		}
-		err := p.BannerColl.Find(nil).Sort("index").All(&respBody.Banners)
+		tmpBanners := make([]model.Banner, 0)
+		err := p.BannerColl.Find(nil).Sort("index").All(&tmpBanners)
 		if err != nil {
 			http.Error(w, "find banners error: "+err.Error(), 500)
 			return
 		}
+		respBody.Banners = make([]model.Banner, 0)
 		respBody.CommodityMap = make(map[uint]*model.Commodity, 0)
-		for _, banner := range respBody.Banners {
+		for _, banner := range tmpBanners {
 			var commodity model.Commodity
 			err = p.CommodityColl.Find(&bson.M{"index": banner.CommodityIndex}).One(&commodity)
 			if err != nil {
-				http.Error(w, "find commodity by index error: "+err.Error(), 400)
-				return
+				p.BannerColl.RemoveId(banner.ID)
+				continue
 			}
+			respBody.Banners = append(respBody.Banners, banner)
 			respBody.CommodityMap[banner.CommodityIndex] = &commodity
 		}
 		respBody.Status = 200

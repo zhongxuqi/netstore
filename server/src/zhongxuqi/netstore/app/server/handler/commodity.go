@@ -158,6 +158,9 @@ func (p *MainHandler) ActionCommodity(w http.ResponseWriter, r *http.Request) {
 		w.Write(respByte)
 		return
 	} else if r.Method == http.MethodDelete {
+		var commodity model.Commodity
+		p.CommodityColl.Find(bson.M{"_id": bson.ObjectIdHex(commodityId)}).One(&commodity)
+		p.BannerColl.RemoveAll(bson.M{"commodityIndex": commodity.Index})
 		err := p.CommodityColl.Remove(bson.M{"_id": bson.ObjectIdHex(commodityId)})
 		if err != nil {
 			http.Error(w, "remove commodity error: "+err.Error(), 500)
