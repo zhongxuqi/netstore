@@ -21,6 +21,7 @@ export default class CommodityOverView extends React.Component {
             }],
             currCommodityClassValue:"",
             isLoading: false,
+            keyword: "",
         }
 
         this.getBanners()
@@ -118,6 +119,18 @@ export default class CommodityOverView extends React.Component {
             $(element).attr("target", "_blank")
         })
         $("#commodityDetailModal").modal("show")
+    }
+
+    filterCommodities(commodities) {
+        let ret = [],
+            keyword = this.state.keyword
+        if (keyword==="") return commodities
+        for (let i=0;i<commodities.length;i++) {
+            if (commodities[i].title.includes(keyword)) {
+                ret.push(commodities[i])
+            }
+        }
+        return ret
     }
 
     render() {
@@ -221,12 +234,17 @@ export default class CommodityOverView extends React.Component {
                     <div className="col-md-10 col-sm-10 col-xs-12" onLoad={()=>{
                         $(".grid-item-image").css("height", $(".grid-item-image")[0].clientWidth+"px")
                     }}>
+                        <div className="form-group text-filter">
+                                <input className="form-control" placeholder={Language.textMap("Enter Keyword")} value={this.state.keyword} onChange={((event)=>{
+                                    this.setState({keyword: event.target.value})
+                                }).bind(this)}/>
+                        </div>
                         <h1 style={{textAlign:"center",display:{true:"block", false:"none"}[this.state.isLoading]}}>
                             <i className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
                             <span className="sr-only">Loading...</span>
                         </h1>
                         {
-                            this.state.commodities.map((commodity, index)=>{
+                            this.filterCommodities(this.state.commodities).map((commodity, index)=>{
                                 return (
                                     <div className="col-md-3 col-sm-4 col-xs-6" key={index} style={{padding:"0px 10px"}}>
                                         <CommodityGridItem onItemClick={this.detailCommodity.bind(this, commodity)} commodity={commodity}></CommodityGridItem>

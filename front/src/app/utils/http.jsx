@@ -17,11 +17,13 @@ function get(url, data, successFunc, errorFunc, finalFunc) {
             } else {
                 alert("["+resp.status+"] "+resp.responseText)
             }
+                
+            if (finalFunc != null) finalFunc()
         },
     })
 }
 
-function post(url, data, successFunc, errorFunc) {
+function post(url, data, successFunc, errorFunc, finalFunc) {
     $.ajax({
         type: 'POST',
         url: url,
@@ -38,6 +40,8 @@ function post(url, data, successFunc, errorFunc) {
             } else {
                 alert("["+resp.status+"] "+resp.responseText)
             }
+                
+            if (finalFunc != null) finalFunc()
         },
     })
 }
@@ -59,6 +63,7 @@ function deleteAction(url, data, successFunc, errorFunc) {
             } else {
                 alert("["+resp.status+"] "+resp.responseText)
             }
+            if (finalFunc != null) finalFunc()
         },
     })
 }

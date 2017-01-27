@@ -99,5 +99,6 @@ chineseTextMap["Phone"] = "手机"
 chineseTextMap["Commodity Manager"] = "商品管理"
 chineseTextMap["Manager"] = "管理"
 chineseTextMap["Add Commodity"] = "添加商品"
+chineseTextMap["Enter Keyword"] = "请输入关键字"
 
 export default chineseTextMap;

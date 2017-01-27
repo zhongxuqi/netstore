@@ -78,13 +78,13 @@ export default class Main extends React.Component {
                 <div style={{position:'absolute', zIndex: "10", marginTop:"15px", width: "100%"}}>
                     <div className="container netstore-table" style={{margin: "0px auto", color:"white"}}>
                         <h3 className="netstore-table-cell" style={{width:"99%", cursor:"pointer"}}
-                            onClick={()=>{window.location="/admin.html?lang="+Language.currLang.short}}>
+                            onClick={()=>{window.location="/?lang="+Language.currLang.short}}>
                             <span className="label label-default netstore-shopname">
                                 {this.state.shopname}
                                 <small>{this.state.shopinfo}</small>
                             </span>
                         </h3>
-                        <div className="dropdown">
+                        <div className="dropdown netstore-table-cell">
                             <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
                                 {Language.currLang.value}
                                 <span className="caret"></span>
@@ -98,6 +98,9 @@ export default class Main extends React.Component {
                                     })
                                 }
                             </ul>
+                        </div>
+                        <div className="netstore-table-cell" style={{paddingLeft:"5px"}}>
+                            <a className="btn btn-default" href={"/admin.html?lang="+Language.currLang.short} role="button">Admin</a>
                         </div>
                     </div>
                 </div>

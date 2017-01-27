@@ -20,6 +20,7 @@ export default class CommodityEditor extends React.Component {
                 detailIntro: "",
             },
             classes: [],
+            isUploading: false,
         }
         if (this.props.routeParams != null && this.props.routeParams.id != null && this.props.routeParams.id.length > 0) {
             HttpUtils.get("/api/root/commodity/"+this.props.routeParams.id,{},((resp)=>{
@@ -68,7 +69,7 @@ export default class CommodityEditor extends React.Component {
     }
 
     submit() {
-        console.log(this.state.commodity)
+        if (this.state.isUploading) return
         this.setState({hasSubmit: true})
         if (this.state.commodity.title.length == 0) {
             HttpUtils.alert("标题不能为空")
@@ -98,6 +99,8 @@ export default class CommodityEditor extends React.Component {
         if (this.state.commodity.id != null && this.state.commodity.id.length > 0) {
             action = "edit"
         }
+        this.state.isUploading = true
+        this.setState({})
         HttpUtils.post("/api/root/commodity", {
             action: action,
             commodity: this.state.commodity,
@@ -185,7 +188,7 @@ export default class CommodityEditor extends React.Component {
                     </div>
                 </div>
                 <div className="row">
-                    <button type="button" className="btn btn-success pull-right" style={{margin:"10px"}} onClick={this.submit.bind(this)}>提交</button>
+                    <button disabled={{true:"disabled", false:""}[this.state.isUploading]} type="button" className="btn btn-success pull-right" style={{margin:"10px"}} onClick={this.submit.bind(this)}>提交</button>
                     <button type="button" className="btn btn-warning pull-right" style={{margin:"10px"}} onClick={this.onClickCancel.bind(this)}>取消</button>
                 </div>
             </div>
