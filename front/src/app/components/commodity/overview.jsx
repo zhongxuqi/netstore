@@ -126,7 +126,7 @@ export default class CommodityOverView extends React.Component {
             keyword = this.state.keyword
         if (keyword==="") return commodities
         for (let i=0;i<commodities.length;i++) {
-            if (commodities[i].title.includes(keyword)) {
+            if (commodities[i].title.toLowerCase().includes(keyword.toLowerCase())) {
                 ret.push(commodities[i])
             }
         }
